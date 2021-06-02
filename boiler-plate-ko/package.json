@@ -1,0 +1,37 @@
+{
+  "name": "boiler-plate-ko",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000b\u0000o\u0000i\u0000l\u0000e\u0000r\u0000-\u0000p\u0000l\u0000a\u0000t\u0000e\u0000-\u0000k\u0000o\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "backend": "nodemon server/index.js",
+    "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MJoon-Jung/boiler-plate-ko.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MJoon-Jung/boiler-plate-ko/issues"
+  },
+  "homepage": "https://github.com/MJoon-Jung/boiler-plate-ko#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.0.2",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.2",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
