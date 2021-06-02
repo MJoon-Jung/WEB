@@ -1,0 +1,133 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+header {
+  background-color: black;
+  color: white;
+  height: 60px;
+  line-height: 60px;
+  padding: 0 10%;
+  font-size: 1.4em;
+  font-weight: 1000;
+}
+.navbar {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1%;
+}
+.navbar a {
+  text-align: center;
+  width: 100%;
+  background-color: rgb(202, 202, 202);
+  color: black;
+  text-decoration: none;
+  height: 20%;
+  line-height: 40px;
+  font-weight: 600;
+  font-size: 1.3em;
+}
+.navbar a:hover {
+  background-color: black;
+  color: white;
+}
+.sidebar {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin: 1% 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  /* height: 40px;
+  line-height: 40px; */
+}
+.sidebar h3 {
+  width: 20%;
+}
+.sidebar h3:hover {
+  background-color: rgb(202, 202, 202);
+}
+.sidebar a {
+  width: 20%;
+  text-decoration: none;
+  color: black;
+}
+.sidebar a:hover {
+  background-color: rgb(202, 202, 202);
+}
+img {
+  width: 100%;
+}
+.main {
+  padding: 0 1%;
+}
+.contents h1 {
+  color: green;
+}
+.contents p {
+  margin-top: 3%;
+}
+.advertise img {
+  margin-top: 4%;
+}
+.pageno {
+  text-align: center;
+}
+.pageno a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.6em;
+  font-weight: 500;
+}
+footer {
+  background-color: black;
+  color: white;
+  height: 80px;
+  line-height: 80px;
+  padding: 0 40px;
+  font-size: 1.4em;
+}
+@media screen and (min-width: 720px) {
+  .navbar {
+    flex-direction: row;
+  }
+  .container {
+    display: flex;
+  }
+  .sidebar {
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 20%;
+    background-color: beige;
+  }
+  .sidebar h3 {
+    width: 100%;
+    margin: 3% 0;
+  }
+  .sidebar a {
+    width: 100%;
+    margin: 1% 0;
+  }
+  .main {
+    width: 80%;
+  }
+}
+@media screen and (min-width: 1040px) {
+  .articles {
+    display: flex;
+    border: 1px solid black;
+    padding: 0 1%;
+    justify-content: space-between;
+    margin-top: 1% 0;
+  }
+  .contents {
+    width: 58%;
+  }
+  .advertise {
+    width: 40%;
+  }
+  .main {
+    margin: 1% 0;
+  }
+}

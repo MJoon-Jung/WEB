@@ -1,0 +1,78 @@
+* {
+  box-sizing: border-box;
+}
+@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+body {
+  width: 1000px;
+  margin: 0 auto;
+}
+header {
+  font-size: 4em;
+  text-align: center;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#fcfcfc+0,2989d8+32,207cca+66,fcfcfc+100 */
+  background: #fcfcfc; /* Old browsers */
+  background: -moz-linear-gradient(
+    left,
+    #fcfcfc 0%,
+    #2989d8 32%,
+    #207cca 66%,
+    #fcfcfc 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    left,
+    #fcfcfc 0%,
+    #2989d8 32%,
+    #207cca 66%,
+    #fcfcfc 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to right,
+    #fcfcfc 0%,
+    #2989d8 32%,
+    #207cca 66%,
+    #fcfcfc 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#fcfcfc',GradientType=1 ); /* IE6-9 */
+  margin-bottom: 10px;
+}
+.container {
+  position: relative;
+  height: 500px;
+}
+.box1 {
+  float: left;
+  width: 180px;
+  height: 500px;
+  border: 1px solid black;
+  padding: 10px;
+}
+.box1 ul {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+.box1 h3 {
+  text-align: center;
+}
+.box1 > ul > li:hover {
+  background-color: greenyellow;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+.box2 {
+  float: left;
+  width: 390px;
+  height: 500px;
+  border: 1px solid black;
+  padding: 10px;
+  margin-left: 20px;
+}
+.box3 {
+  float: right;
+  width: 390px;
+  height: 500px;
+  border: 1px solid black;
+  padding: 10px;
+}

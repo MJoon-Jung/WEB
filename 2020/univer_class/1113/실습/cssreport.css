@@ -1,0 +1,92 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  width: 1000px;
+  margin: 0 auto;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.sidelink {
+  width: 200px;
+  height: 800px;
+  border: 1px solid gray;
+  text-align: center;
+}
+.sidelink .title {
+  font-size: 2em;
+  height: 80px;
+}
+.sidelink .links a {
+  display: block;
+  text-decoration: none;
+  height: 30px;
+  color: white;
+}
+.sidelink .links a:hover {
+  background-color: blue;
+}
+.main {
+  width: 790px;
+  height: 800px;
+  border: 1px solid white;
+  padding: 5px;
+}
+.main .articles {
+  padding: 5px;
+  height: 260px;
+}
+.main .articles h2 {
+  margin: 0;
+}
+.main .team {
+  display: flex;
+  justify-content: space-between;
+  height: 300px;
+}
+.team .ceo {
+  border: 1px solid white;
+  width: 250px;
+  padding: 5px;
+}
+.team .ceo img {
+  width: 100%;
+}
+.team .designer {
+  border: 1px solid white;
+  width: 250px;
+  padding: 5px;
+}
+.team .designer img {
+  width: 100%;
+}
+.team .architect {
+  border: 1px solid white;
+  width: 250px;
+  padding: 5px;
+}
+.team .architect img {
+  width: 100%;
+}
+.footer {
+  border: 1px solid white;
+  padding: 5px;
+  height: 233px;
+}
+.footer form div label {
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+}
+.footer form div input {
+  width: 300px;
+}
+button[type="submit"] {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  margin-left: 85px;
+}

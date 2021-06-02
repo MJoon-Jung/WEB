@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="#">
+      <h1>웹개발 지원서</h1>
+      <hr />
+
+      Search <input type="text" placeholder="검색" /><br /><br />
+      <fieldset>
+        <legend>개인정보</legend>
+        이름 &nbsp;&nbsp;&nbsp;<input
+          type="text"
+          name="name"
+          placeholder="공백없이 입력하세요"
+        /><br />
+        연락처&nbsp;<input type="tel" name="phone_num" /> <br />
+        E-Mail&nbsp;<input type="email" name="email" size="30" /> <br />
+        신청일&nbsp;<input type="date" name="date" /> <br />
+      </fieldset>
+
+      <h2>지원분야 1</h2>
+      <input type="radio" id="ra_html" name="support" value="ra_html" />
+      <label for="ra_html">HTML5</label><br />
+      <input type="radio" id="ra_css" name="support" value="ra_css" />
+      <label for="ra_css">CSS3</label><br />
+      <input type="radio" id="ra_js" name="support" value="ra_js" />
+      <label for="ra_js">Javascript</label><br />
+      <input type="radio" id="ra_java" name="support" value="ra_java" />
+      <label for="ra_java">Java</label><br />
+
+      <h2>지원분야2</h2>
+      <input type="checkbox" id="ch_html" name="support2" value="ch_html" />
+      <label for="ch_html">HTML5</label><br />
+      <input type="checkbox" id="ch_css" name="support2" value="ch_css" />
+      <label for="ch_css">CSS3</label><br />
+      <input type="checkbox" id="ch_js" name="support2" value="ch_js" />
+      <label for="ch_js">Javascript</label><br />
+      <input type="checkbox" id="ch_java" name="support2" value="ch_java" />
+      <label for="ch_java">Java</label>
+      <br /><br />
+      <select name="program" size="5">
+        <option value="html">HTML5</option>
+        <option value="CSS3">CSS3</option>
+        <option value="JQuery">JQuery</option>
+        <option value="Java">Java</option>
+        <option value="C++">C++</option>
+      </select>
+
+      <h2>기타 보유 기술</h2>
+
+      <textarea name="intro" cols="60" rows="8"></textarea><br /><br />
+      <input type="submit" name="submit" value="신청" />
+      <input type="reset" name="reset" value="다시쓰기" />
+    </form>
+  </body>
+</html>

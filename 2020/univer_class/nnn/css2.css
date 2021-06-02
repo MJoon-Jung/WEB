@@ -1,0 +1,40 @@
+h1{
+    background-color: orange;
+}
+h1::before{
+    content:"2020 "
+}
+h1::after{
+    content:" 2020"
+}
+/* p:nth-child(2n+1){
+    color:red;
+} */
+
+/* p:nth-of-type(2n){
+    color:red;
+} */
+/* p::first-letter{
+    font-size:2em;
+    font-weight: 900;
+    color:red;
+} */
+/* input[type="password"]:focus{
+    background-color:blue;
+    color:white;
+}
+div,input{
+    color:green;
+} */
+table,th,td{
+    border:2px solid blue;
+}
+table > tbody > tr{
+    background-color: green;
+}
+ul li {
+    font-size: 200%;
+}
+#vw{
+    font-size:3vw;
+}

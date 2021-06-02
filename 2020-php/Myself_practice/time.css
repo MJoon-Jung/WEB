@@ -1,0 +1,48 @@
+* {
+  margin: 0 auto;
+  padding: 0;
+  width: 500px;
+  box-sizing: border-box;
+}
+.head {
+  height: 70px;
+  line-height: 50px;
+  border-bottom: 2px solid #e2e3e1;
+}
+.head p {
+  float: left;
+  font-size: 1.1em;
+  font-weight: bolder;
+  width: 200px;
+}
+.head h1 {
+  float: left;
+  width: 200px;
+}
+.head i {
+  float: right;
+  width: 20px;
+  font-size: 2em;
+  position: relative;
+  top: 12px;
+}
+.content {
+  overflow: hidden;
+}
+.content img {
+  width: 350px;
+  float: left;
+}
+.content h4 {
+  position: relative;
+  bottom: 30px;
+  left: 5px;
+}
+.content p {
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+.main p {
+  margin-bottom: 30px;
+  font-weight: bolder;
+}

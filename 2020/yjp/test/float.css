@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+}
+h1 {
+  margin: 0;
+  height: 3em;
+  text-align: center;
+  line-height: 80px;
+  background-color: blue;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  background-color: green;
+  overflow: hidden;
+}
+li {
+  float: left;
+  width: 150px;
+  text-align: center;
+}
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 2em;
+}
+li:hover {
+  background-color: red;
+}

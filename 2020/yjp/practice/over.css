@@ -1,0 +1,24 @@
+body {
+  width: 1000px;
+  margin: 0 auto;
+}
+ul {
+  border: 5px solid black;
+  list-style: none;
+  padding: 0;
+  /* overflow: hidden; */
+}
+li {
+  border: 5px solid blue;
+  float: left;
+  margin: 0 5px;
+}
+p {
+  clear: both;
+}
+div {
+  /* float: left; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /*...생성*/
+}

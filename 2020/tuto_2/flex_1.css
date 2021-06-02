@@ -1,0 +1,25 @@
+.container {
+  height: 500px;
+  background-color: aqua;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-around; */
+  align-items: center;
+  /* align-content: space-between; 간격조절 */
+  /* body  > margin:0 auto 가 가운데 정렬 */
+}
+.items {
+  width: 100px;
+  height: 80px;
+  font-size: 3em;
+  text-align: center;
+  border: 1px solid black;
+}
+.items:nth-child(3) {
+  align-self: flex-start;
+}
+.items:nth-child(5) {
+  flex-grow: 1;
+  flex-shrink: 0;
+  order: -1;
+}

@@ -1,0 +1,132 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+header {
+  width: 1500px;
+  margin: 0 auto;
+}
+header ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+}
+header li {
+  width: 5%;
+}
+header a {
+  text-decoration: none;
+  color: black;
+  font-weight: 1000;
+  font-size: 1.1em;
+}
+.mainlink {
+  display: flex;
+  width: 1500px;
+  margin: 0 auto;
+  height: 80px;
+  line-height: 80px;
+}
+.mainlink ul {
+  list-style: none;
+  width: 100%;
+  margin-left: 5%;
+  display: flex;
+  justify-content: space-around;
+}
+.mainlink a {
+  text-decoration: none;
+  color: black;
+  font-weight: 1000;
+  font-size: 1.1em;
+}
+.mainlink a:hover {
+  color: red;
+}
+.main {
+  background: url(./yjmain.jpg);
+  height: 642px;
+}
+.info {
+  width: 1500px;
+  height: 642px;
+  margin: 0 auto;
+  position: relative;
+}
+.news {
+  background-color: black;
+  opacity: 0.7;
+  width: 320px;
+  padding: 3% 2%;
+  position: absolute;
+  right: 250px;
+  top: 70px;
+}
+.line {
+  color: white;
+}
+.news a {
+  color: white;
+  text-decoration: none;
+}
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  width: 1150px;
+  position: absolute;
+  top: 430px;
+  left: 165px;
+}
+.link {
+  background-color: black;
+  width: 230px;
+  height: 80px;
+  line-height: 80px;
+  opacity: 0.7;
+  text-align: center;
+}
+.link:nth-of-type(2n-1) {
+  background-color: rgb(139, 139, 139);
+  opacity: 0.9;
+}
+.link:hover {
+  background-color: rgb(255, 187, 0);
+  opacity: 1;
+}
+.link a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.6em;
+}
+hr {
+  margin: 7px 0;
+}
+footer {
+  display: flex;
+  flex-direction: column;
+  height: 70px;
+  border: 1px solid black;
+}
+.footmenu {
+  background-color: rgb(196, 196, 196);
+}
+.footmenu ul {
+  display: flex;
+  list-style: none;
+  width: 1500px;
+  margin: 0 auto;
+  font-weight: 1000;
+  text-align: center;
+}
+.footmenu ul li a {
+  text-decoration: none;
+  display: inline-block;
+  color: black;
+  width: 150px;
+}
+footer p {
+  width: 1500px;
+  margin: 0 auto;
+  line-height: 50px;
+}

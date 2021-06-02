@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        font-size: 1.5em;
+        width: 500px;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        background-color: greenyellow;
+      }
+      .images {
+        width: 500px;
+        height: 300px;
+        margin: 20px 0;
+        border: 1px solid gray;
+      }
+      img {
+        width: 100%;
+      }
+      button {
+        font-size: 1.5em;
+      }
+    </style>
+    <script src="./script2.js"></script>
+  </head>
+  <body>
+    <h1>Change Text</h1>
+    <div class="container"></div>
+    <div class="images"></div>
+    <hr />
+    <button onclick="cli()">중지</button>
+    <script>
+      function cli() {
+        let btn = document.querySelector("button");
+        btn.setAttribute("class", "click");
+      }
+    </script>
+  </body>
+</html>

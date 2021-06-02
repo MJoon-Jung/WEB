@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      li {
+        color: blue;
+      }
+      ol li {
+        font-size: 40px;
+      }
+      .em {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="target">
+      <li>html</li>
+      <li>css</li>
+      <li>javascript</li>
+    </ul>
+    <ol>
+      <li>최진혁</li>
+      <li>최유빈</li>
+      <li>한이람</li>
+      <li>한이은</li>
+    </ol>
+    <input
+      type="button"
+      value="강조"
+      onclick="document.getElementById('target').className='em'"
+    />
+  </body>
+</html>

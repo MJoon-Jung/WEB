@@ -1,0 +1,93 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  max-width: 1400px;
+  min-width: 500px;
+  margin: 0 auto;
+}
+.sidelink .title {
+  /* background-color: coral; */
+  font-size: 2em;
+  font-weight: 900;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+.sidelink a {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  color: black;
+  font-weight: 700;
+  font-size: 1.2em;
+  line-height: 2;
+}
+.links {
+  /* border: 1px solid black; */
+  margin: 1% 0;
+}
+.sidelink a:hover {
+  background-color: blue;
+  color: white;
+}
+img {
+  width: 100%;
+}
+.articles,
+.main,
+.footer {
+  padding: 0 2%;
+}
+.ceo,
+.designer,
+.architect {
+  width: 80%;
+  margin: auto;
+  padding: 0 2%;
+}
+label {
+  display: block;
+  width: 100px;
+}
+input {
+  width: 100%;
+}
+button {
+  font-size: 1.5em;
+  background-color: red;
+  color: white;
+}
+@media screen and (min-width: 800px) {
+  .sidelink {
+    width: 24%;
+    height: 800px;
+    /* background-color: yellow; */
+    float: left;
+  }
+  .main {
+    width: 75%;
+    float: right;
+    height: 800px;
+    /* background-color: greenyellow; */
+  }
+  .team {
+    height: 320px;
+    /* background-color: turquoise; */
+  }
+  .ceo,
+  .designer,
+  .architect {
+    width: 30%;
+    height: 300px;
+    float: left;
+    margin-left: 2%;
+    border: 1px solid gray;
+  }
+  label {
+    display: inline-block;
+  }
+  input {
+    width: 60%;
+  }
+}
