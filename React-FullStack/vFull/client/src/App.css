@@ -1,0 +1,228 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  color: #a4acc4;
+}
+body {
+  width: 1400px;
+  height: 650px;
+  font-size: 0.2rem;
+  margin: 0 auto;
+  background-color: #10121b;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+/* header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 100px;
+  border-bottom: 1px solid white;
+  height: 100px;
+  line-height: 100px;
+}
+.navbar {
+  display: flex;
+}
+.header-name {
+  font-size: 40px;
+}
+.header-item {
+  font-size: 20px;
+  margin-right: 30px;
+  text-decoration: none;
+}
+.logoutBtn {
+  width: 100px;
+  height: 100px;
+}
+.header-username {
+  font-size: 15px;
+}
+
+/* sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  border-right: 1px solid white;
+  width: 20%;
+  height: 100%;
+  text-align: left;
+  padding: 100px 40px;
+}
+a {
+  text-decoration: none;
+}
+.sidebar .item-link {
+  font-size: 25px;
+  margin-top: 30px;
+}
+.main-container {
+  width: 79%;
+  display: flex;
+  height: 650px;
+}
+/* main */
+.main {
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  padding: 50px 100px;
+}
+
+.listOfComments {
+  width: 100px;
+}
+
+.loginContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loginContainer input,
+.loginContainer button {
+  width: 200px;
+  height: 50px;
+  border-radius: 8px;
+  border: none;
+  margin: 10px;
+}
+
+.loginContainer button {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.loginContainer input {
+  border: 2px solid dodgerblue;
+}
+
+/* post */
+.input-wrap {
+  display: flex;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+}
+.input-wrap .post-create {
+  width: 10%;
+  background-color: rgb(103, 45, 45);
+}
+.input-wrap .qt {
+  width: 10%;
+}
+.input-wrap input {
+  width: 70%;
+}
+.input-wrap button {
+  width: 10%;
+}
+.post {
+  height: 50px;
+}
+.post-create {
+  border: 1px solid white;
+}
+.board-list {
+  text-align: center;
+}
+.board-list .post {
+  background-color: rgba(224, 224, 224, 0.186);
+}
+.board-list .post:hover {
+  background-color: rgb(57, 73, 73);
+}
+.board-list .post .id {
+  width: 10%;
+}
+.board-list .post .title {
+  width: 70%;
+}
+.board-list .post .writer {
+  width: 20%;
+}
+/* ImageSection */
+.ImageSection {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  padding: 20px;
+  margin: 0 auto;
+}
+.profile-img {
+  border-radius: 100%;
+}
+.about-details {
+  display: flex;
+  margin-top: 30px;
+}
+.about-info {
+  padding: 20px;
+}
+
+/* registeration */
+.formContainer {
+  text-align: center;
+  border: 1px solid white;
+}
+.pager {
+  height: 100%;
+}
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page-link {
+  cursor: pointer;
+  position: relative;
+  display: block;
+  color: #673ab7;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #673ab7;
+}
+.page-link:hover {
+  z-index: 2;
+  color: #fff;
+  background-color: #673ab7;
+  border-color: #024dbc;
+}
+.page-link:focus {
+  z-index: 3;
+  outline: 0;
+  box-shadow: none;
+}
+
+/* Registeration */
+.formContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.formContainer input,
+.formContainer button {
+  width: 200px;
+  height: 50px;
+  border-radius: 8px;
+  border: none;
+  margin: 10px;
+}
+
+.formContainer button {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.formContainer input {
+  border: 2px solid dodgerblue;
+}
