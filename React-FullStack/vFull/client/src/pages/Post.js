@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
 import { useHistory } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
@@ -9,7 +10,7 @@ export default function Post() {
   let { id } = useParams();
 
   const history = useHistory();
-
+  const [postAuth, setPostAuth] = useState(false);
   const [postObject, setPostObject] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -18,22 +19,7 @@ export default function Post() {
   const [isAuth, setIsAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
-      if (!response.data) {
-        history.push("/none");
-      }
-      setPostObject(response.data);
-    });
-
-    axios.get(`http://localhost:3001/comments/${id}`).then((response) => {
-      setComments(response.data);
-    });
-
-    auth();
-  }, []);
-
-  function auth() {
+  const auth = useCallback(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       axios
@@ -47,13 +33,31 @@ export default function Post() {
             localStorage.removeItem("accessToken");
           } else {
             setIsAuth(true);
+
+            if (postObject.username === response.data.username) {
+              setPostAuth(true);
+            }
           }
         });
     } else {
       setIsAuth(false);
     }
     setIsLoading(false);
-  }
+  }, [postObject.username]);
+  useEffect(() => {
+    axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
+      if (!response.data) {
+        history.push("/none");
+      }
+      setPostObject(response.data);
+    });
+
+    axios.get(`http://localhost:3001/comments/${id}`).then((response) => {
+      setComments(response.data);
+    });
+
+    auth();
+  }, [auth, history, id]);
 
   const addComment = () => {
     axios
@@ -128,6 +132,19 @@ export default function Post() {
           <hr />
           <div className="footer">{postObject.username}</div>
           <button onClick={deletePost}>글삭제</button>
+          {postAuth ? (
+            <Link
+              to={{
+                pathname: "/createpost",
+                state: { id: id, post: postObject },
+              }}
+              style={{ color: "GREEN", border: "1px solid white" }}
+            >
+              글 수정
+            </Link>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 

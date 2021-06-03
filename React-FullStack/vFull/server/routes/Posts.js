@@ -61,6 +61,15 @@ router.post("/", validateToken, async (req, res) => {
   res.json(post);
 });
 
+router.put("/", validateToken, async (req, res) => {
+  const post = await Posts.findByPk(req.body.id);
+  post.title = req.body.title;
+  post.postText = req.body.postText;
+  console.log(post);
+  await post.save();
+  res.json(post);
+});
+
 router.delete("/byId/:id", validateToken, async (req, res) => {
   const id = req.params.id;
   const post = await Posts.findOne({

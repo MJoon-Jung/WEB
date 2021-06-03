@@ -4,13 +4,14 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
-export default function CreatePost() {
+export default function CreatePost(props) {
   let history = useHistory();
 
   const [isAuth, setIsAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log(props);
     const token = localStorage.getItem("accessToken");
     if (token) {
       axios
@@ -33,8 +34,12 @@ export default function CreatePost() {
   }, []);
 
   const initialValues = {
-    title: "",
-    postText: "",
+    title:
+      props.location.state === undefined ? "" : props.location.state.post.title,
+    postText:
+      props.location.state === undefined
+        ? ""
+        : props.location.state.post.postText,
   };
 
   const validationSchema = Yup.object().shape({
@@ -43,15 +48,27 @@ export default function CreatePost() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
-    axios
-      .post("http://localhost:3001/posts", data, {
-        headers: { accessToken: localStorage.getItem("accessToken") },
-      })
-      .then((response) => {
-        console.log(data);
-        history.push("/post");
-      });
+    if (props.location.state === undefined) {
+      axios
+        .post("http://localhost:3001/posts", data, {
+          headers: { accessToken: localStorage.getItem("accessToken") },
+        })
+        .then((response) => {
+          console.log(data);
+          history.push("/post");
+        });
+    } else {
+      data = { ...data, id: props.location.state.id };
+      axios
+        .put("http://localhost:3001/posts", data, {
+          headers: { accessToken: localStorage.getItem("accessToken") },
+        })
+        .then((response) => {
+          console.log(data);
+          history.push(`/post/${props.location.state.id}`);
+          window.location.reload();
+        });
+    }
   };
 
   const html = (
@@ -78,7 +95,7 @@ export default function CreatePost() {
           name="postText"
           placeholder="(Ex. Post...)"
         />
-        <button type="submit"> Create Post</button>
+        <button type="submit">Posting</button>
       </Form>
     </Formik>
   );
