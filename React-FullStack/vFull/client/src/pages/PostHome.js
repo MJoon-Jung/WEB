@@ -12,39 +12,40 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(8);
 
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   let history = useHistory();
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      axios
-        .get("http://localhost:3001/auth/auth", {
-          headers: {
-            accessToken: token,
-          },
-        })
-        .then((response) => {
-          if (response.data.error) {
-            localStorage.removeItem("accessToken");
-          } else {
-            setIsAuth(true);
-          }
-        });
-    } else {
-      setIsAuth(false);
-    }
-    setIsLoading(false);
-  }, []);
+    fetchPosts();
 
-  useEffect(() => {
     async function fetchPosts() {
       setLoading(true);
       const res = await axios.get("http://localhost:3001/posts");
       setPosts(res.data);
       setLoading(false);
+      auth();
     }
-    fetchPosts();
+    function auth() {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        axios
+          .get("http://localhost:3001/auth/auth", {
+            headers: {
+              accessToken: token,
+            },
+          })
+          .then((response) => {
+            if (response.data.error) {
+              localStorage.removeItem("accessToken");
+            } else {
+              setIsAuth(true);
+            }
+          });
+      } else {
+        setIsAuth(false);
+      }
+      setIsLoading(false);
+    }
   }, []);
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -99,8 +100,11 @@ function Home() {
     </div>
   );
   function goHome() {
-    alert("접근 권한이 없습니다");
-    history.push("/login");
+    if (!isLoading) {
+      if (!isAuth) {
+        history.push("/login");
+      }
+    }
   }
 
   function showHTML() {

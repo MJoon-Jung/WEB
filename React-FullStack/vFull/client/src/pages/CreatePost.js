@@ -7,8 +7,11 @@ import LoadingPage from "./LoadingPage";
 function CreatePost() {
   let history = useHistory();
 
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [title, setTitle] = useState("");
+  const [postText, setPostText] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -35,63 +38,59 @@ function CreatePost() {
   const initialValues = {
     title: "",
     postText: "",
-    username: "",
   };
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("You must input a Title!"),
     postText: Yup.string().required(),
-    username: Yup.string().min(3).max(15).required(),
   });
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:3001/posts", data).then((response) => {
-      console.log(data);
-      history.push("/post");
-    });
+    console.log(data);
+    axios
+      .post("http://localhost:3001/posts", data, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then((response) => {
+        console.log(data);
+        history.push("/post");
+      });
   };
 
   const html = (
-    <div className="createPostPage">
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-      >
-        <Form className="formContainer">
-          <label>Title: </label>
-          <ErrorMessage name="title" component="span" />
-          <Field
-            autocomplete="off"
-            id="inputCreatePost"
-            name="title"
-            placeholder="(Ex. Title...)"
-          />
-          <label>Post: </label>
-          <ErrorMessage name="postText" component="span" />
-          <Field
-            autocomplete="off"
-            id="inputCreatePost"
-            name="postText"
-            placeholder="(Ex. Post...)"
-          />
-          <label>Username: </label>
-          <ErrorMessage name="username" component="span" />
-          <Field
-            autocomplete="off"
-            id="inputCreatePost"
-            name="username"
-            placeholder="(Ex. John123...)"
-          />
-
-          <button type="submit"> Create Post</button>
-        </Form>
-      </Formik>
-    </div>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      validationSchema={validationSchema}
+    >
+      <Form className="formContainer">
+        <label>Title: </label>
+        <ErrorMessage name="title" component="span" />
+        <Field
+          autocomplete="off"
+          id="inputCreatePost"
+          name="title"
+          placeholder="(Ex. Title...)"
+        />
+        <label>Post: </label>
+        <ErrorMessage name="postText" component="span" />
+        <Field
+          autocomplete="off"
+          id="inputCreatePostText"
+          name="postText"
+          placeholder="(Ex. Post...)"
+        />
+        <button type="submit"> Create Post</button>
+      </Form>
+    </Formik>
   );
   function goHome() {
-    alert("접근 권한이 없습니다");
-    history.push("/login");
+    if (isLoading) alert("123123");
+    else {
+      if (!isAuth) {
+        history.push("/login");
+      }
+    }
   }
   function showHTML() {
     return isLoading ? (
