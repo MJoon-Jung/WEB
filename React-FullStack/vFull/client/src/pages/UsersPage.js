@@ -1,51 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Postslist from "../component/Postslist";
-import { Link } from "react-router-dom";
 import Pagination from "../component/Pagination";
-import LoadingPage from "./LoadingPage";
-import { useHistory } from "react-router-dom";
 
-export default function Home() {
+export default function UsersPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(8);
 
-  const [isAuth, setIsAuth] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
-  let history = useHistory();
   useEffect(() => {
-    fetchPosts();
-
-    async function fetchPosts() {
-      setLoading(true);
-      const res = await axios.get("http://localhost:3001/posts");
-      setPosts(res.data);
-      setLoading(false);
-      auth();
-    }
-    function auth() {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        axios
-          .get("http://localhost:3001/auth/auth", {
-            headers: {
-              accessToken: token,
-            },
-          })
-          .then((response) => {
-            if (response.data.error) {
-              localStorage.removeItem("accessToken");
-            } else {
-              setIsAuth(true);
-            }
-          });
-      } else {
-        setIsAuth(false);
-      }
-      setIsLoading(false);
-    }
+    setLoading(true);
+    axios
+      .get("http://localhost:3001/posts/userpage", {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then((res) => {
+        setPosts(res.data);
+        setLoading(false);
+      });
   }, []);
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -61,9 +34,6 @@ export default function Home() {
         <div className="form-search">
           <form name="srhform" method="get">
             <div className="input-wrap">
-              <span className="post-create">
-                {<Link to="/createpost">글쓰기</Link>}
-              </span>
               <select className="qt">
                 <option value="t">제목</option>
                 <option value="v">내용</option>
@@ -99,23 +69,5 @@ export default function Home() {
       <footer></footer>
     </div>
   );
-  function goHome() {
-    if (!isLoading) {
-      if (!isAuth) {
-        history.push("/login");
-      }
-    }
-  }
-
-  function showHTML() {
-    return isLoading ? (
-      <LoadingPage />
-    ) : isAuth ? (
-      html
-    ) : (
-      <LoadingPage>{goHome()}</LoadingPage>
-    );
-  }
-
-  return showHTML();
+  return html;
 }

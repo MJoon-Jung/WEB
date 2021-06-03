@@ -2,23 +2,58 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../helpers/AuthContext";
+import { useHistory } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
 
-function Post() {
+export default function Post() {
   let { id } = useParams();
+
+  const history = useHistory();
+
   const [postObject, setPostObject] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const { authState } = useContext(AuthContext);
 
+  const [isAuth, setIsAuth] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
+      if (!response.data) {
+        history.push("/none");
+      }
       setPostObject(response.data);
     });
 
     axios.get(`http://localhost:3001/comments/${id}`).then((response) => {
       setComments(response.data);
     });
+
+    auth();
   }, []);
+
+  function auth() {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      axios
+        .get("http://localhost:3001/auth/auth", {
+          headers: {
+            accessToken: token,
+          },
+        })
+        .then((response) => {
+          if (response.data.error) {
+            localStorage.removeItem("accessToken");
+          } else {
+            setIsAuth(true);
+          }
+        });
+    } else {
+      setIsAuth(false);
+    }
+    setIsLoading(false);
+  }
 
   const addComment = () => {
     axios
@@ -63,16 +98,40 @@ function Post() {
       });
   };
 
-  return (
+  function deletePost() {
+    axios
+      .delete(`http://localhost:3001/posts/byId/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then((response) => {
+        if (!response.data.success) {
+          return alert("권한이 없습니다");
+        }
+        history.push("/post");
+        window.location.reload();
+      });
+  }
+
+  const html = (
     <div className="postPage">
-      <div className="leftSide">
+      <div className="postSide">
         <div className="post" id="individual">
+          제목
+          <hr />
           <div className="title"> {postObject.title} </div>
+          <hr />
+          내용
+          <hr />
           <div className="body">{postObject.postText}</div>
+          <hr />
+          글쓴이
+          <hr />
           <div className="footer">{postObject.username}</div>
+          <button onClick={deletePost}>글삭제</button>
         </div>
       </div>
-      <div className="rightSide">
+
+      <div className="commentSide">
         <div className="addCommentContainer">
           <input
             type="text"
@@ -107,5 +166,24 @@ function Post() {
       </div>
     </div>
   );
+
+  function goHome() {
+    if (!isLoading) {
+      if (!isAuth) {
+        history.push("/login");
+      }
+    }
+  }
+
+  function showHTML() {
+    return isLoading ? (
+      <LoadingPage />
+    ) : isAuth ? (
+      html
+    ) : (
+      <LoadingPage>{goHome()}</LoadingPage>
+    );
+  }
+
+  return showHTML();
 }
-export default Post;

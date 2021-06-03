@@ -12,12 +12,14 @@ import Promotion from "./pages/Promotion";
 import { AuthContext } from "./helpers/AuthContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
-function App() {
+import UsersPage from "./pages/UsersPage";
+export default function App() {
   const [authState, setAuthState] = useState({
     username: "",
     id: 0,
     status: false,
   });
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/auth/auth", {
@@ -68,7 +70,9 @@ function App() {
                   Logout
                 </button>
               )}
-              <p className="header-username">{authState.username}</p>
+              <Link to="/userpage" className="header-username">
+                {authState.username}
+              </Link>
             </div>
           </div>
           <div className="main-container">
@@ -97,6 +101,7 @@ function App() {
                 <Route path="/login" exact component={Login} />
                 <Route path="/profile" exact component={Profile} />
                 <Route path="/promotion" exact component={Promotion} />
+                <Route path="/userpage" exact component={UsersPage} />
                 <Route exact component={NonePage} />
               </Switch>
             </div>
@@ -106,4 +111,3 @@ function App() {
     </div>
   );
 }
-export default App;

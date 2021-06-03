@@ -4,14 +4,11 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
-function CreatePost() {
+export default function CreatePost() {
   let history = useHistory();
 
   const [isAuth, setIsAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-
-  const [title, setTitle] = useState("");
-  const [postText, setPostText] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -64,7 +61,7 @@ function CreatePost() {
       validationSchema={validationSchema}
     >
       <Form className="formContainer">
-        <label>Title: </label>
+        <label>제목</label>
         <ErrorMessage name="title" component="span" />
         <Field
           autocomplete="off"
@@ -72,9 +69,10 @@ function CreatePost() {
           name="title"
           placeholder="(Ex. Title...)"
         />
-        <label>Post: </label>
+        <label>내용</label>
         <ErrorMessage name="postText" component="span" />
         <Field
+          component="textarea"
           autocomplete="off"
           id="inputCreatePostText"
           name="postText"
@@ -104,5 +102,3 @@ function CreatePost() {
 
   return showHTML();
 }
-
-export default CreatePost;

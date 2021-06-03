@@ -9,6 +9,17 @@ var timezone = require("dayjs/plugin/timezone");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+function timeSetting(list) {
+  list = list.map((post) => {
+    post.dataValues.updatedAt = dayjs(post.dataValues.updatedAt)
+      .tz("Asia/Seoul")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    return post;
+  });
+  return list;
+}
+
 router.get("/", async (req, res) => {
   let listOfPosts = await Posts.findAll({
     attributes: ["id", "title", "username", "updatedAt"],
@@ -17,14 +28,7 @@ router.get("/", async (req, res) => {
       ["id", "DESC"],
     ],
   });
-  listOfPosts = listOfPosts.map((post) => {
-    console.log(post.dataValues.updatedAt);
-    post.dataValues.updatedAt = dayjs(post.dataValues.updatedAt)
-      .tz("Asia/Seoul")
-      .format("YYYY-MM-DD HH:mm:ss");
-
-    return post;
-  });
+  listOfPosts = timeSetting(listOfPosts);
   res.json(listOfPosts);
 });
 
@@ -34,8 +38,20 @@ router.get("/byId/:id", async (req, res) => {
   res.json(post);
 });
 
+router.get("/userpage", validateToken, async (req, res) => {
+  let listOfPosts = await Posts.findAll({
+    where: { username: req.user.username },
+    attributes: ["id", "title", "username", "updatedAt"],
+    order: [
+      ["updatedAt", "DESC"],
+      ["id", "DESC"],
+    ],
+  });
+  listOfPosts = timeSetting(listOfPosts);
+  res.json(listOfPosts);
+});
+
 router.post("/", validateToken, async (req, res) => {
-  console.log(req.body.title + " " + req.body.postText + " " + req.user);
   const post = {
     title: req.body.title,
     postText: req.body.postText,
@@ -43,6 +59,19 @@ router.post("/", validateToken, async (req, res) => {
   };
   await Posts.create(post);
   res.json(post);
+});
+
+router.delete("/byId/:id", validateToken, async (req, res) => {
+  const id = req.params.id;
+  const post = await Posts.findOne({
+    where: { id: id, username: req.user.username },
+  });
+  console.log(post);
+  if (!post) {
+    return res.json({ success: false });
+  }
+  await post.destroy();
+  res.json({ success: true });
 });
 
 module.exports = router;
