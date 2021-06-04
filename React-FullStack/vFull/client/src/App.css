@@ -119,14 +119,17 @@ a {
   width: 10%;
   background-color: rgb(103, 45, 45);
 }
-.input-wrap .qt {
-  width: 10%;
+.search-post {
+  width: 90%;
 }
-.input-wrap input {
+.search-post .qt {
+  width: 15%;
+}
+.search-post input {
   width: 70%;
 }
-.input-wrap button {
-  width: 10%;
+.search-post button {
+  width: 15%;
 }
 .post {
   height: 50px;

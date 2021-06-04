@@ -5,6 +5,8 @@ const { Posts } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone");
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -32,12 +34,6 @@ router.get("/", async (req, res) => {
   res.json(listOfPosts);
 });
 
-router.get("/byId/:id", async (req, res) => {
-  const id = req.params.id;
-  const post = await Posts.findByPk(id);
-  res.json(post);
-});
-
 router.get("/userpage", validateToken, async (req, res) => {
   let listOfPosts = await Posts.findAll({
     where: { username: req.user.username },
@@ -48,6 +44,65 @@ router.get("/userpage", validateToken, async (req, res) => {
     ],
   });
   listOfPosts = timeSetting(listOfPosts);
+  res.json(listOfPosts);
+});
+router.get("/byId/:id", async (req, res) => {
+  const id = req.params.id;
+  const post = await Posts.findByPk(id);
+  res.json(post);
+});
+router.get("/title/:searchValue", validateToken, async (req, res) => {
+  const searchValue = req.params.searchValue;
+  console.log(searchValue);
+  let listOfPosts = await Posts.findAll({
+    where: {
+      title: { [Op.like]: `%${searchValue}%` },
+    },
+    attributes: ["id", "title", "username", "updatedAt"],
+    order: [
+      ["updatedAt", "DESC"],
+      ["id", "DESC"],
+    ],
+  });
+  listOfPosts = timeSetting(listOfPosts);
+  console.log(listOfPosts);
+  res.json(listOfPosts);
+});
+router.get("/posttext/:searchValue", validateToken, async (req, res) => {
+  const searchValue = req.params.searchValue;
+  console.log(searchValue);
+  let listOfPosts = await Posts.findAll({
+    where: {
+      postText: { [Op.like]: `%${searchValue}%` },
+    },
+    attributes: ["id", "title", "username", "updatedAt"],
+    order: [
+      ["updatedAt", "DESC"],
+      ["id", "DESC"],
+    ],
+  });
+  listOfPosts = timeSetting(listOfPosts);
+  console.log(listOfPosts);
+  res.json(listOfPosts);
+});
+router.get("/titleposttext/:searchValue", validateToken, async (req, res) => {
+  const searchValue = req.params.searchValue;
+  console.log(searchValue);
+  let listOfPosts = await Posts.findAll({
+    where: {
+      [Op.or]: [
+        { postText: { [Op.like]: `%${searchValue}%` } },
+        { title: { [Op.like]: `%${searchValue}%` } },
+      ],
+    },
+    attributes: ["id", "title", "username", "updatedAt"],
+    order: [
+      ["updatedAt", "DESC"],
+      ["id", "DESC"],
+    ],
+  });
+  listOfPosts = timeSetting(listOfPosts);
+  console.log(listOfPosts);
   res.json(listOfPosts);
 });
 
