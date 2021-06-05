@@ -240,3 +240,15 @@ a {
 .postPage {
   display: flex;
 }
+
+.profile-preview {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+.profile-none {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  background-color: rgb(44, 44, 44);
+}

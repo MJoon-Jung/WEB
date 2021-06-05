@@ -13,6 +13,8 @@ const postRouter = require("./routes/Posts");
 app.use("/posts", postRouter);
 const commentsRouter = require("./routes/Comments");
 app.use("/comments", commentsRouter);
+const introRouter = require("./routes/Intro");
+app.use("/intro", introRouter);
 const usersRouter = require("./routes/Users");
 app.use("/auth", usersRouter);
 
