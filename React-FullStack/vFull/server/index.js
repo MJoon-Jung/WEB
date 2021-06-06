@@ -13,12 +13,12 @@ const postRouter = require("./routes/Posts");
 app.use("/posts", postRouter);
 const commentsRouter = require("./routes/Comments");
 app.use("/comments", commentsRouter);
-const introRouter = require("./routes/Intro");
-app.use("/intro", introRouter);
+const profileRouter = require("./routes/profile");
+app.use("/profile", profileRouter);
 const usersRouter = require("./routes/Users");
 app.use("/auth", usersRouter);
 
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   app.listen(3001, () => {
     console.log("Server running on port 3001");
   });
