@@ -31,7 +31,7 @@ export default function CreatePost(props) {
       setIsAuth(false);
     }
     setIsLoading(false);
-  }, []);
+  }, [props]);
 
   const initialValues = {
     title:

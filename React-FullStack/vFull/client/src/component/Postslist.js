@@ -8,7 +8,7 @@ export default function Postslist({ posts, loading }) {
     const time = tmp[1];
     const day = date.split("-")[2];
     const today = String(new Date().getDate());
-    return today === day ? time : date;
+    return Number(today) === Number(day) ? time : date;
   }
 
   if (loading) {

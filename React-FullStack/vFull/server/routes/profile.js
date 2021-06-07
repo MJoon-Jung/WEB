@@ -26,30 +26,31 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-router.post("/img", validateToken, upload.single("img"), (req, res) => {
-  console.log(req.body.file);
-  res.json({ url: `/img/${req.body.file.name}` });
+router.get("/", validateToken, async (req, res) => {
+  const profile = await Profile.findOne({
+    where: {
+      username: req.user.username,
+    },
+  });
+  res.json(profile);
+});
+router.get("/profiles", async (req, res) => {
+  const profiles = await Profile.findAll({
+    order: [["updatedAt", "DESC"]],
+  });
+  res.json(profiles);
 });
 
-const upload2 = multer();
-router.post("/", validateToken, async (req, res, next) => {
-  console.log(req.body);
-  try {
-    const profile = await Profile.create({
-      name: req.body.name,
-      birthday: req.body.date,
-      gender: req.body.gender,
-      gender: req.body.gender,
-      intro: req.body.intro,
-      img: req.body.file.name,
-      url: req.body.fileUrl,
-      username: req.user.username,
-    });
-    res.json(profile);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
+router.post("/img", validateToken, upload.single("img"), async (req, res) => {
+  const profile = await Profile.create({
+    name: req.body.name,
+    gender: req.body.gender,
+    birthday: req.body.birthday,
+    intro: req.body.intro,
+    img: req.file.filename,
+    username: req.user.username,
+  });
+  res.json(profile);
 });
 
 module.exports = router;

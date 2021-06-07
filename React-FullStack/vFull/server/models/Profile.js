@@ -20,17 +20,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       img: {
         type: DataTypes.STRING,
-        allowNull: false,
-        uniqie: true,
+        allowNull: true,
       },
-    },
-    {
-      indexes: [
-        {
-          fields: ["img"],
-          unique: true,
-        },
-      ],
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        primaryKey: true,
+      },
     },
     {
       charset: "utf8",
@@ -42,12 +38,6 @@ module.exports = (sequelize, DataTypes) => {
     Profile.belongsTo(models.Users, {
       foreignKey: "username",
       targetKey: "username",
-    });
-    Profile.hasOne(models.File, {
-      foreignKey: "image",
-      sourceKey: "img",
-      onDelete: "cascade",
-      onUpdate: "CASCADE",
     });
   };
 
