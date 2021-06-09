@@ -1,6 +1,9 @@
 import React from "react";
 
 export default function ProfileData(props) {
+  function clickHandle() {
+    console.log("dsds");
+  }
   return (
     <div className="myprofile">
       <div className="myprofile-image">
@@ -26,6 +29,7 @@ export default function ProfileData(props) {
         <div>자기소개</div>
         <div>{props.intro}</div>
       </div>
+      <button onClick={clickHandle}>수정</button>
     </div>
   );
 }
