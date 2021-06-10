@@ -1,8 +1,19 @@
 import React from "react";
-
+import ProfileHTML from "./ProfileHTML";
 export default function ProfileData(props) {
-  function clickHandle() {
-    console.log("dsds");
+  function clickHandle(e) {
+    console.log("ssss");
+    e.preventDefault();
+    return (
+      <ProfileHTML
+        isOnprops={true}
+        img={props.img}
+        name={props.name}
+        gender={props.gender}
+        birthday={props.birthday}
+        intro={props.intro}
+      />
+    );
   }
   return (
     <div className="myprofile">
@@ -29,7 +40,7 @@ export default function ProfileData(props) {
         <div>자기소개</div>
         <div>{props.intro}</div>
       </div>
-      <button onClick={clickHandle}>수정</button>
+      <button onClick={(e) => clickHandle(e)}>수정</button>
     </div>
   );
 }

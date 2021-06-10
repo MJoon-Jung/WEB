@@ -1,40 +1,54 @@
-import React, { useState } from 'react'
-export default function profileHTML(props) {
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+export default function ProfileHTML(props) {
+  const [data, setData] = useState({
+    name: "",
+    gender: "",
+    birthday: "",
+    intro: "",
+  });
 
-    const [data, setData] = useState({
-        name: "",
-        gender: "",
-        birthday: "",
-        intro: "",
+  let history = useHistory();
+  const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    if (props.isOnData) {
+      data.name = props.name;
+      data.gender = props.gender;
+      data.birthday = props.birthday;
+      data.intro = props.intro;
+      setFile(props.file);
+    }
+  }, []);
+
+  function handle(e) {
+    let newdata = { ...data };
+    if (e.target.type === "radio") {
+      newdata["gender"] = e.target.value;
+    } else {
+      newdata[e.target.id] = e.target.value;
+    }
+    setData(newdata);
+    console.log(data);
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("img", file);
+    formData.append("name", data["name"]);
+    formData.append("gender", data["gender"]);
+    formData.append("birthday", data["birthday"]);
+    formData.append("intro", data["intro"]);
+    axios
+      .post("http://localhost:3001/profile/img", formData, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then((response) => {
+        console.log(response.data);
+        window.location.reload();
       });
-
-      function handle(e) {
-        let newdata = { ...data };
-        if (e.target.type === "radio") {
-          newdata["gender"] = e.target.value;
-        } else {
-          newdata[e.target.id] = e.target.value;
-        }
-        setData(newdata);
-        console.log(data);
-      }
-      function handleSubmit(e) {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("img", file);
-        formData.append("name", data["name"]);
-        formData.append("gender", data["gender"]);
-        formData.append("birthday", data["birthday"]);
-        formData.append("intro", data["intro"]);
-        axios
-          .post("http://localhost:3001/profile/img", formData, {
-            headers: { accessToken: localStorage.getItem("accessToken") },
-          })
-          .then((response) => {
-            console.log(response.data);
-            window.location.reload();
-          });
-      }
+  }
 
   return (
     <div>
@@ -96,6 +110,6 @@ export default function profileHTML(props) {
         />
         <button>등록</button>
       </form>
-    </div>w
+    </div>
   );
 }
