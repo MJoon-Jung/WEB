@@ -3,7 +3,6 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
 import ProfileData from "./ProfileData";
-import ProfileHTML from "./ProfileHTML";
 
 export default function Profile() {
   const [data, setData] = useState({
@@ -67,9 +66,11 @@ export default function Profile() {
       intro={data.intro}
     />
   ) : (
-    <ProfileHTML isOnData={false} />
+    <>{goForm()}</>
   );
-
+  function goForm() {
+    // history.push("/profileform");
+  }
   function goHome() {
     if (!isLoading) {
       if (!isAuth) {

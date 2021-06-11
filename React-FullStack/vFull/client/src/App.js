@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import NonePage from "./pages/NonePage";
 import Promotion from "./pages/Promotion";
+import ProfileHTML from "./pages/ProfileHTML";
 import { AuthContext } from "./helpers/AuthContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -102,6 +103,7 @@ export default function App() {
                 <Route path="/profile" exact component={Profile} />
                 <Route path="/promotion" exact component={Promotion} />
                 <Route path="/userpage" exact component={UsersPage} />
+                <Route path="/profileform" exact component={ProfileHTML} />
                 <Route exact component={NonePage} />
               </Switch>
             </div>

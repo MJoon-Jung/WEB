@@ -53,4 +53,21 @@ router.post("/img", validateToken, upload.single("img"), async (req, res) => {
   res.json(profile);
 });
 
+router.put("/img", validateToken, upload.single("img"), async (req, res) => {
+  const profile = await Profile.findOne({
+    username: req.user.username,
+  });
+  profile.name = req.body.name;
+  profile.gender = req.body.gender;
+  profile.birthday = req.body.birthday;
+  profile.intro = req.body.intro;
+  if (req.file) {
+    profile.img = req.file.filename;
+  }
+
+  await profile.save();
+
+  res.json(profile);
+});
+
 module.exports = router;

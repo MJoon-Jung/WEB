@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 export default function ProfileHTML(props) {
+  let history = useHistory();
   const [data, setData] = useState({
     name: "",
     gender: "",
@@ -9,18 +10,16 @@ export default function ProfileHTML(props) {
     intro: "",
   });
 
-  let history = useHistory();
   const [file, setFile] = useState(null);
+  const [isModified, setisModified] = useState(false);
 
   useEffect(() => {
-    if (props.isOnData) {
-      data.name = props.name;
-      data.gender = props.gender;
-      data.birthday = props.birthday;
-      data.intro = props.intro;
-      setFile(props.file);
+    if (props.location.state !== undefined) {
+      setData(props.location.state.data);
+      setisModified(true);
+      console.log(props.location.state.data);
     }
-  }, []);
+  }, [props.data, props.location.state]);
 
   function handle(e) {
     let newdata = { ...data };
@@ -32,39 +31,79 @@ export default function ProfileHTML(props) {
     setData(newdata);
     console.log(data);
   }
-  function handleSubmit(e) {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("img", file);
+  function formDataSetting(formData) {
     formData.append("name", data["name"]);
     formData.append("gender", data["gender"]);
     formData.append("birthday", data["birthday"]);
     formData.append("intro", data["intro"]);
-    axios
-      .post("http://localhost:3001/profile/img", formData, {
-        headers: { accessToken: localStorage.getItem("accessToken") },
-      })
-      .then((response) => {
-        console.log(response.data);
-        window.location.reload();
-      });
   }
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    if (!isModified) {
+      formData.append("img", file);
+      formDataSetting();
+      axios
+        .post("http://localhost:3001/profile/img", formData, {
+          headers: { accessToken: localStorage.getItem("accessToken") },
+        })
+        .then((response) => {
+          console.log(response.data);
+          history.push("/profile");
+          window.location.reload();
+        });
+    } else {
+      if (file !== null) {
+        formData.append("img", file);
+      }
+      formDataSetting(formData);
 
+      axios
+        .put("http://localhost:3001/profile/img", formData, {
+          headers: { accessToken: localStorage.getItem("accessToken") },
+        })
+        .then((response) => {
+          console.log(response.data);
+          history.push("/profile");
+          window.location.reload();
+        });
+    }
+  }
   return (
     <div>
       <form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
         <br />
-        <img
-          className="profile-preview"
-          src={file ? URL.createObjectURL(file) : null}
-          alt={file ? file.name : null}
-        />
-        <input
-          type="file"
-          accept="image/*"
-          required
-          onChange={(e) => setFile(e.target.files[0])}
-        />
+        {isModified ? (
+          <img
+            className="profile-preview"
+            src={
+              file
+                ? URL.createObjectURL(file)
+                : `http://localhost:3001/img/${data.img}`
+            }
+            alt={file ? file.name : data.img}
+          />
+        ) : (
+          <img
+            className="profile-preview"
+            src={file ? URL.createObjectURL(file) : null}
+            alt={file ? file.name : null}
+          />
+        )}
+        {isModified ? (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        ) : (
+          <input
+            type="file"
+            accept="image/*"
+            required
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        )}
         <br />
         <label>이름</label>
         <input
@@ -108,7 +147,7 @@ export default function ProfileHTML(props) {
           value={data.intro}
           required
         />
-        <button>등록</button>
+        {isModified ? <button>수정</button> : <button>등록</button>}
       </form>
     </div>
   );

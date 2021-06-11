@@ -1,46 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ProfileHTML from "./ProfileHTML";
+import { Link } from "react-router-dom";
 export default function ProfileData(props) {
-  function clickHandle(e) {
-    console.log("ssss");
-    e.preventDefault();
-    return (
-      <ProfileHTML
-        isOnprops={true}
-        img={props.img}
-        name={props.name}
-        gender={props.gender}
-        birthday={props.birthday}
-        intro={props.intro}
-      />
-    );
-  }
-  return (
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const newData = {
+      name: props.name,
+      gender: props.gender,
+      birthday: props.birthday,
+      intro: props.intro,
+      img: props.img,
+    };
+    setData(newData);
+  }, [props.img, props.name, props.gender, props.birthday, props.intro]);
+
+  let html = (
     <div className="myprofile">
       <div className="myprofile-image">
         <img
           className="profile-preview"
-          src={props.img ? `http://localhost:3001/img/${props.img}` : null}
-          alt={props.img ? props.img : null}
+          src={data.img ? `http://localhost:3001/img/${data.img}` : null}
+          alt={data.img ? data.img : null}
         />
       </div>
       <div className="myprofile-name">
         <div>이름</div>
-        <div>{props.name}</div>
+        <div>{data.name}</div>
       </div>
       <div className="myprofile-gender">
         <div>성별</div>
-        <div>{props.gender}</div>
+        <div>{data.gender}</div>
       </div>
       <div className="myprofile-birthday">
         <div>생년월일</div>
-        <div>{props.birthday}</div>
+        <div>{data.birthday}</div>
       </div>
       <div className="myprofile-intro">
         <div>자기소개</div>
-        <div>{props.intro}</div>
+        <div>{data.intro}</div>
       </div>
-      <button onClick={(e) => clickHandle(e)}>수정</button>
+      <Link
+        to={{
+          pathname: "/profileform",
+          state: {
+            data: data,
+          },
+        }}
+        style={{ color: "GREEN", border: "1px solid white" }}
+      >
+        글 수정
+      </Link>
     </div>
   );
+  return html;
 }
