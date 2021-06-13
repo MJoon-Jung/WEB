@@ -303,9 +303,16 @@ a {
 /* post.js */
 .postPage {
   display: flex;
+  flex-direction: column;
   align-content: space-between;
 }
 .post-modify {
   position: absolute;
   right: 10%;
+}
+.post table {
+  float: left;
+}
+.commentSide {
+  clear: left;
 }

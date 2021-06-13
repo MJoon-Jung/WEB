@@ -70,6 +70,8 @@ router.put("/img", validateToken, upload.single("img"), async (req, res) => {
     const profile = await Profile.findOne({
       username: req.user.username,
     });
+    console.log(profile);
+    console.log("sssssssssssssssss", req.user.username);
     profile.name = req.body.name;
     profile.gender = req.body.gender;
     profile.birthday = req.body.birthday;
@@ -78,6 +80,7 @@ router.put("/img", validateToken, upload.single("img"), async (req, res) => {
       profile.img = req.file.filename;
     }
 
+    console.log(profile);
     await profile.save();
 
     res.json(profile);

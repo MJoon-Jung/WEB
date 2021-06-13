@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import ProfileHTML from "./ProfileHTML";
-import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import axios from "axios";
 export default function ProfileData(props) {
   const [data, setData] = useState({});
 
-  const history = useHistory();
   useEffect(() => {
     const newData = {
       name: props.name,
@@ -18,18 +14,6 @@ export default function ProfileData(props) {
     setData(newData);
   }, [props.img, props.name, props.gender, props.birthday, props.intro]);
 
-  function onQuitButton() {
-    axios
-      .delete("http://localhost:3001/auth/quit", {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then(() => {
-        history.push("/");
-        console.log("delete");
-      });
-  }
   let html = (
     <div className="myprofile">
       <div className="myprofile-image">
