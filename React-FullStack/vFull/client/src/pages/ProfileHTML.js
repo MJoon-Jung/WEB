@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
 export default function ProfileHTML(props) {
   let history = useHistory();
   const [data, setData] = useState({
@@ -12,14 +13,35 @@ export default function ProfileHTML(props) {
 
   const [file, setFile] = useState(null);
   const [isModified, setisModified] = useState(false);
+  const [isAuth, setIsAuth] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (props.location.state !== undefined) {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      axios
+        .get("http://localhost:3001/auth/auth", {
+          headers: {
+            accessToken: token,
+          },
+        })
+        .then((response) => {
+          if (response.data.error) {
+            localStorage.removeItem("accessToken");
+          } else {
+            setIsAuth(true);
+          }
+        });
+    } else {
+      setIsAuth(false);
+    }
+    setIsLoading(false);
+    if (!props.NoneData) {
       setData(props.location.state.data);
       setisModified(true);
       console.log(props.location.state.data);
     }
-  }, [props.data, props.location.state]);
+  }, [props.NoneData, props.location]);
 
   function handle(e) {
     let newdata = { ...data };
@@ -42,13 +64,12 @@ export default function ProfileHTML(props) {
     const formData = new FormData();
     if (!isModified) {
       formData.append("img", file);
-      formDataSetting();
+      formDataSetting(formData);
       axios
         .post("http://localhost:3001/profile/img", formData, {
           headers: { accessToken: localStorage.getItem("accessToken") },
         })
-        .then((response) => {
-          console.log(response.data);
+        .then(() => {
           history.push("/profile");
           window.location.reload();
         });
@@ -69,7 +90,8 @@ export default function ProfileHTML(props) {
         });
     }
   }
-  return (
+
+  const html = (
     <div>
       <form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
         <br />
@@ -151,4 +173,21 @@ export default function ProfileHTML(props) {
       </form>
     </div>
   );
+  function goHome() {
+    if (!isLoading) {
+      if (!isAuth) {
+        history.push("/login");
+      }
+    }
+  }
+  function showHTML() {
+    return isLoading ? (
+      <LoadingPage />
+    ) : isAuth ? (
+      html
+    ) : (
+      <LoadingPage>{goHome()}</LoadingPage>
+    );
+  }
+  return showHTML();
 }

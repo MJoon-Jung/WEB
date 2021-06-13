@@ -100,8 +100,7 @@ export default function CreatePost(props) {
     </Formik>
   );
   function goHome() {
-    if (isLoading) alert("123123");
-    else {
+    if (!isLoading) {
       if (!isAuth) {
         history.push("/login");
       }

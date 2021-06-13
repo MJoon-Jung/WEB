@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "rhksflwk",
-    "database": "TutorialDB",
+    "database": "myblog",
     "host": "localhost",
     "dialect": "mysql",
     "timezone": "+09:00"

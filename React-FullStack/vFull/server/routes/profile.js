@@ -27,47 +27,63 @@ const upload = multer({
 });
 
 router.get("/", validateToken, async (req, res) => {
-  const profile = await Profile.findOne({
-    where: {
-      username: req.user.username,
-    },
-  });
-  res.json(profile);
+  try {
+    const profile = await Profile.findOne({
+      where: {
+        username: req.user.username,
+      },
+    });
+    res.json(profile);
+  } catch (err) {
+    console.error(err);
+  }
 });
 router.get("/profiles", async (req, res) => {
-  const profiles = await Profile.findAll({
-    order: [["updatedAt", "DESC"]],
-  });
-  res.json(profiles);
+  try {
+    const profiles = await Profile.findAll({
+      order: [["updatedAt", "DESC"]],
+    });
+    res.json(profiles);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 router.post("/img", validateToken, upload.single("img"), async (req, res) => {
-  const profile = await Profile.create({
-    name: req.body.name,
-    gender: req.body.gender,
-    birthday: req.body.birthday,
-    intro: req.body.intro,
-    img: req.file.filename,
-    username: req.user.username,
-  });
-  res.json(profile);
+  try {
+    const profile = await Profile.create({
+      name: req.body.name,
+      gender: req.body.gender,
+      birthday: req.body.birthday,
+      intro: req.body.intro,
+      img: req.file.filename,
+      username: req.user.username,
+    });
+    res.json(profile);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 router.put("/img", validateToken, upload.single("img"), async (req, res) => {
-  const profile = await Profile.findOne({
-    username: req.user.username,
-  });
-  profile.name = req.body.name;
-  profile.gender = req.body.gender;
-  profile.birthday = req.body.birthday;
-  profile.intro = req.body.intro;
-  if (req.file) {
-    profile.img = req.file.filename;
+  try {
+    const profile = await Profile.findOne({
+      username: req.user.username,
+    });
+    profile.name = req.body.name;
+    profile.gender = req.body.gender;
+    profile.birthday = req.body.birthday;
+    profile.intro = req.body.intro;
+    if (req.file) {
+      profile.img = req.file.filename;
+    }
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err);
   }
-
-  await profile.save();
-
-  res.json(profile);
 });
 
 module.exports = router;

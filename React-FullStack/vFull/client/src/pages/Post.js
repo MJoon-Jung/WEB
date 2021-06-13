@@ -120,31 +120,36 @@ export default function Post() {
     <div className="postPage">
       <div className="postSide">
         <div className="post" id="individual">
-          제목
-          <hr />
-          <div className="title"> {postObject.title} </div>
-          <hr />
-          내용
-          <hr />
-          <div className="body">{postObject.postText}</div>
-          <hr />
-          글쓴이
-          <hr />
-          <div className="footer">{postObject.username}</div>
-          <button onClick={deletePost}>글삭제</button>
-          {postAuth ? (
-            <Link
-              to={{
-                pathname: "/createpost",
-                state: { id: id, post: postObject },
-              }}
-              style={{ color: "GREEN", border: "1px solid white" }}
-            >
-              글 수정
-            </Link>
-          ) : (
-            <></>
-          )}
+          <table>
+            <tr>
+              <th>제목</th>
+              <td>{postObject.title}</td>
+            </tr>
+            <tr>
+              <th>내용</th>
+              <td>{postObject.postText}</td>
+            </tr>
+            <tr>
+              <th>글쓴이</th>
+              <td>{postObject.username}</td>
+            </tr>
+            {postAuth ? (
+              <div className="post-modify">
+                <button onClick={deletePost}>글삭제</button>
+                <Link
+                  to={{
+                    pathname: "/createpost",
+                    state: { id: id, post: postObject },
+                  }}
+                  style={{ color: "GREEN", border: "1px solid white" }}
+                >
+                  글 수정
+                </Link>
+              </div>
+            ) : (
+              <></>
+            )}
+          </table>
         </div>
       </div>
 
@@ -164,11 +169,23 @@ export default function Post() {
         <div className="listOfComments">
           {comments.map((comment, key) => {
             return (
-              <div key={key} className="comment">
+              <div
+                key={key}
+                className="comment"
+                style={{
+                  color: "yellow",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 {comment.commentBody}
-                <label> Username: {comment.username}</label>
+                <label style={{ fontSize: "14px" }}>
+                  {" "}
+                  ({comment.username})
+                </label>
                 {authState.username === comment.username && (
                   <button
+                    style={{ width: "18px" }}
                     onClick={() => {
                       deleteComment(comment.id);
                     }}

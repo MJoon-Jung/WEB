@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ProfileHTML from "./ProfileHTML";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
+import axios from "axios";
 export default function ProfileData(props) {
   const [data, setData] = useState({});
 
+  const history = useHistory();
   useEffect(() => {
     const newData = {
       name: props.name,
@@ -15,6 +18,18 @@ export default function ProfileData(props) {
     setData(newData);
   }, [props.img, props.name, props.gender, props.birthday, props.intro]);
 
+  function onQuitButton() {
+    axios
+      .delete("http://localhost:3001/auth/quit", {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then(() => {
+        history.push("/");
+        console.log("delete");
+      });
+  }
   let html = (
     <div className="myprofile">
       <div className="myprofile-image">
@@ -24,22 +39,24 @@ export default function ProfileData(props) {
           alt={data.img ? data.img : null}
         />
       </div>
-      <div className="myprofile-name">
-        <div>이름</div>
-        <div>{data.name}</div>
-      </div>
-      <div className="myprofile-gender">
-        <div>성별</div>
-        <div>{data.gender}</div>
-      </div>
-      <div className="myprofile-birthday">
-        <div>생년월일</div>
-        <div>{data.birthday}</div>
-      </div>
-      <div className="myprofile-intro">
-        <div>자기소개</div>
-        <div>{data.intro}</div>
-      </div>
+      <table>
+        <tr>
+          <th>이름</th>
+          <td>{data.name}</td>
+        </tr>
+        <tr>
+          <th>성별</th>
+          <td>{data.gender}</td>
+        </tr>
+        <tr>
+          <th>생년월일</th>
+          <td>{data.birthday}</td>
+        </tr>
+        <tr>
+          <th>자기소개</th>
+          <td>{data.intro}</td>
+        </tr>
+      </table>
       <Link
         to={{
           pathname: "/profileform",

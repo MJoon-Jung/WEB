@@ -299,3 +299,13 @@ a {
 .h-myprofile-intro {
   display: flex;
 }
+
+/* post.js */
+.postPage {
+  display: flex;
+  align-content: space-between;
+}
+.post-modify {
+  position: absolute;
+  right: 10%;
+}
