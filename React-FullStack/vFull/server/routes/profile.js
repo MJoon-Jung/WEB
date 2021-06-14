@@ -26,7 +26,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-router.get("/", validateToken, async (req, res) => {
+router.get("/", validateToken, async (req, res, next) => {
   try {
     const profile = await Profile.findOne({
       where: {
@@ -36,9 +36,10 @@ router.get("/", validateToken, async (req, res) => {
     res.json(profile);
   } catch (err) {
     console.error(err);
+    next(err);
   }
 });
-router.get("/profiles", async (req, res) => {
+router.get("/profiles", async (req, res, next) => {
   try {
     const profiles = await Profile.findAll({
       order: [["updatedAt", "DESC"]],
@@ -46,47 +47,58 @@ router.get("/profiles", async (req, res) => {
     res.json(profiles);
   } catch (err) {
     console.error(err);
+    next(err);
   }
 });
 
-router.post("/img", validateToken, upload.single("img"), async (req, res) => {
-  try {
-    const profile = await Profile.create({
-      name: req.body.name,
-      gender: req.body.gender,
-      birthday: req.body.birthday,
-      intro: req.body.intro,
-      img: req.file.filename,
-      username: req.user.username,
-    });
-    res.json(profile);
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-router.put("/img", validateToken, upload.single("img"), async (req, res) => {
-  try {
-    const profile = await Profile.findOne({
-      username: req.user.username,
-    });
-    console.log(profile);
-    console.log("sssssssssssssssss", req.user.username);
-    profile.name = req.body.name;
-    profile.gender = req.body.gender;
-    profile.birthday = req.body.birthday;
-    profile.intro = req.body.intro;
-    if (req.file) {
-      profile.img = req.file.filename;
+router.post(
+  "/img",
+  validateToken,
+  upload.single("img"),
+  async (req, res, next) => {
+    try {
+      const profile = await Profile.create({
+        name: req.body.name,
+        gender: req.body.gender,
+        birthday: req.body.birthday,
+        intro: req.body.intro,
+        img: req.file.filename,
+        username: req.user.username,
+      });
+      res.json(profile);
+    } catch (err) {
+      console.error(err);
+      next(err);
     }
-
-    console.log(profile);
-    await profile.save();
-
-    res.json(profile);
-  } catch (err) {
-    console.error(err);
   }
-});
+);
+
+router.put(
+  "/img",
+  validateToken,
+  upload.single("img"),
+  async (req, res, next) => {
+    try {
+      const profile = await Profile.findOne({
+        where: {
+          username: req.user.username,
+        },
+      });
+      profile.name = req.body.name;
+      profile.gender = req.body.gender;
+      profile.birthday = req.body.birthday;
+      profile.intro = req.body.intro;
+      if (req.file) {
+        profile.img = req.file.filename;
+      }
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  }
+);
 
 module.exports = router;

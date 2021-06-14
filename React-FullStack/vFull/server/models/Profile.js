@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     Profile.belongsTo(models.Users, {
       foreignKey: "username",
       targetKey: "username",
+      onDelete: "cascade",
     });
   };
 

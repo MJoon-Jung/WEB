@@ -18,10 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     Comments.belongsTo(models.Users, {
       foreignKey: "username",
       targetKey: "username",
+      onDelete: "cascade",
     });
     Comments.belongsTo(models.Posts, {
       foreignKey: "PostId",
       targetKey: "id",
+      onDelete: "cascade",
     });
   };
 

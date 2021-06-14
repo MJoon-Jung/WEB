@@ -21,10 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     Posts.belongsTo(models.Users, {
       foreignKey: "username",
       targetKey: "username",
+      onDelete: "cascade",
     });
     Posts.hasMany(models.Comments, {
       foreignKey: "PostId",
       sourceKey: "id",
+      onDelete: "cascade",
     });
   };
 

@@ -64,9 +64,10 @@ export default function Profile() {
       gender={data.gender}
       birthday={data.birthday}
       intro={data.intro}
+      onSettingData={true}
     />
   ) : (
-    <ProfileHTML NoneData={true} />
+    <ProfileData onSettingData={false} />
   );
   function goHome() {
     if (!isLoading) {

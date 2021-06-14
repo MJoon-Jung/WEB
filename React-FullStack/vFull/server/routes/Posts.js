@@ -129,7 +129,7 @@ router.get("/titleposttext/:searchValue", validateToken, async (req, res) => {
   }
 });
 
-router.post("/", validateToken, async (req, res) => {
+router.post("/", validateToken, async (req, res, next) => {
   try {
     const post = {
       title: req.body.title,
@@ -140,10 +140,11 @@ router.post("/", validateToken, async (req, res) => {
     res.json(post);
   } catch (err) {
     console.error(err);
+    next(err);
   }
 });
 
-router.put("/", validateToken, async (req, res) => {
+router.put("/", validateToken, async (req, res, next) => {
   try {
     const post = await Posts.findByPk(req.body.id);
     post.title = req.body.title;
@@ -153,10 +154,11 @@ router.put("/", validateToken, async (req, res) => {
     res.json(post);
   } catch (err) {
     console.error(err);
+    next(err);
   }
 });
 
-router.delete("/byId/:id", validateToken, async (req, res) => {
+router.delete("/byId/:id", validateToken, async (req, res, next) => {
   try {
     const id = req.params.id;
     const post = await Posts.findOne({
@@ -170,6 +172,7 @@ router.delete("/byId/:id", validateToken, async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error(err);
+    next(err);
   }
 });
 

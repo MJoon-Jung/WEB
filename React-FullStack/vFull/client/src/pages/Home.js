@@ -25,19 +25,19 @@ export default function Home() {
                 />
               </div>
               <div className="h-myprofile-name">
-                <div>이름</div>
+                <div>이름:</div>
                 <div>{value.name}</div>
               </div>
               <div className="h-myprofile-gender">
-                <div>성별</div>
-                <div>{value.gender}</div>
+                <div>성별:</div>
+                <div>{value.gender === "male" ? "남" : "여"}</div>
               </div>
               <div className="h-myprofile-birthday">
-                <div>생년월일</div>
+                <div>생년월일:</div>
                 <div>{value.birthday}</div>
               </div>
               <div className="h-myprofile-intro">
-                <div>자기소개</div>
+                <div>자기소개:</div>
                 <div>{value.intro}</div>
               </div>
             </div>
