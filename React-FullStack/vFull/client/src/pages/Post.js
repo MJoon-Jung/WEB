@@ -33,7 +33,6 @@ export default function Post() {
             localStorage.removeItem("accessToken");
           } else {
             setIsAuth(true);
-
             if (postObject.username === response.data.username) {
               setPostAuth(true);
             }

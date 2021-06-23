@@ -128,7 +128,9 @@ export default function ProfileData(props) {
         </tr>
       </table>
       <button onClick={onModified}>수정하기</button>
-      <button onClick={onQuit}>회원 탈퇴</button>
+      <button onClick={onQuit} style={{ cursor: "pointer" }}>
+        회원 탈퇴
+      </button>
     </div>
   );
   let html2 = (
@@ -259,6 +261,7 @@ export default function ProfileData(props) {
           backgroundColor: "rgba(0,0,0,0)",
           color: "white",
           border: "none",
+          cursor: "pointer",
         }}
       >
         회원 탈퇴

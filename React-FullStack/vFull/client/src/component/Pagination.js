@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 export default function Pagination({ postsPerPage, totalPosts, paginate }) {
   const pageNumbers = [];
-  const [isSelectedNumber, setIsSelectedNumber] = useState(1);
 
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pageNumbers.push(i);
