@@ -1,19 +1,26 @@
 import PropTypes from "prop-types";
 import Link from "next/link";
+import { Menu } from 'antd';
 const AppLayout = ({ children }) => {
   return (
     <div>
-      <div>
-        <Link href="/">
+     <Menu mode="horizontal">
+      <Menu.Item>
+        <Link href="/">    
           <a>홈</a>
         </Link>
-        <Link href="/profile">
-          <a>프로필</a>
+      </Menu.Item>
+      <Menu.Item>
+        <Link href="/profile">    
+          <a>프로필 창입니다.</a>
         </Link>
-        <Link href="/signup">
-          <a>회원가입</a>
+      </Menu.Item>
+      <Menu.Item>
+        <Link href="/signup">    
+          <a>회원가입 창입니다</a>
         </Link>
-      </div>
+      </Menu.Item>
+      </Menu>
       {children}
     </div>
   );
