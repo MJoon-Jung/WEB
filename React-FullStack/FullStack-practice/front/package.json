@@ -14,9 +14,13 @@
     "@ant-design/icons": "^4.6.2",
     "antd": "^4.16.5",
     "next": "^9.1.0",
+    "next-redux-wrapper": "^7.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0",
+    "redux-devtools-extension": "^2.13.9",
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
