@@ -1,50 +1,51 @@
 import React from 'react';
-import PropTypes from "prop-types";
-import Link from "next/link";
-import { Menu, Input, Row, Col } from 'antd';
-import UserProfile from './UserProfile';
-import LoginForm from './LoginForm';
-import styled from 'styled-components';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import { Col, Input, Menu, Row } from 'antd';
 import { useSelector } from 'react-redux';
+import { createGlobalStyle } from 'styled-components';
 
-const SearchInput = styled(Input.Search)`
-  vertical-align: middle;
+import LoginForm from './LoginForm';
+import UserProfile from './UserProfile';
+
+const Global = createGlobalStyle`
+  .ant-row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  .ant-col:first-child {
+      padding-left: 0 !important;
+  }
+  
+  .ant-col:last-child {
+    padding-right: 0 !important;
+  }
 `;
+
 const AppLayout = ({ children }) => {
-
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
+  const { isLoggedIn } = useSelector(state => state.user);
   return (
     <div>
-     <Menu mode="horizontal">
-      <Menu.Item key="home">
-        <Link href="/">    
-          <a>홈</a>
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="profile">
-        <Link href="/profile">    
-          <a>프로필 창입니다.</a>
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="signup">
-        <Link href="/signup">    
-          <a>회원가입 창입니다</a>
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="search">
-        <SearchInput placeholder="input search text" />
-      </Menu.Item>
+      <Global />
+      <Menu mode="horizontal">
+        <Menu.Item key="home"><Link href="/"><a>HOME</a></Link></Menu.Item>
+        <Menu.Item key="profile"><Link href="/profile"><a>프로필</a></Link></Menu.Item>
+        <Menu.Item key="mail">
+          <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
+        </Menu.Item>
       </Menu>
       <Row gutter={8}>
-        <Col xs={24} md={8}>
-          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+        <Col xs={24} md={6}>
+          {isLoggedIn
+            ? <UserProfile />
+            : <LoginForm />}
         </Col>
-        <Col xs={24} md={8}>
-        {children}
+        <Col xs={24} md={12}>
+          {children}
         </Col>
-        <Col xs={24} md={8}>
-          <a href="https://github.com/MJoon-Jung" target="_blank" rel="noreffer noopener">my gitgub</a>
+        <Col xs={24} md={6}>
+          <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">Made by MJoonJung</a>
         </Col>
       </Row>
     </div>
