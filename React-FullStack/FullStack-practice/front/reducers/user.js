@@ -102,6 +102,7 @@ export default (state = initialState, action) => {
         ...state,
         logInLoading: false,
         logInDone: true,
+        logOutDone: false,
         me: dummyUser,
       };
     }
@@ -124,7 +125,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         logOutLoading: false,
-        logOutDone: true, 
+        logOutDone: true,
+        logInDone: false,
         me: null,
       };
     }
