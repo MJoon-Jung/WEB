@@ -1,6 +1,6 @@
 import shortId from 'shortid';
 import produce from 'immer';
-import faker, { fake } from 'faker';
+import faker from 'faker';
 
 export const initialState = {
   mainPosts: [],
