@@ -5,16 +5,14 @@ import 'antd/dist/antd.css';
 
 import wrapper from '../store/configureStore';
 
-const NodeBird = ({ Component }) => {
-  return (
-    <>
-      <Head>
-        <title>HOME</title>
-      </Head>
-      <Component />
-    </>
-  );
-};
+const NodeBird = ({ Component }) => (
+  <>
+    <Head>
+      <title>HOME</title>
+    </Head>
+    <Component />
+  </>
+);
 
 NodeBird.propTypes = {
   Component: PropTypes.elementType.isRequired,
