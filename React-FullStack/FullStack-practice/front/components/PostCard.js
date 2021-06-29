@@ -17,7 +17,7 @@ const CardWrapper = styled.div`
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  const id = useSelector((state) => state.user.me && state.user.me.id);
+  const id = useSelector((state) => state.user.me?.id);
 
   const [liked, setLiked] = useState(false);
 
@@ -96,11 +96,12 @@ PostCard.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.number,
     User: PropTypes.object,
+    UserId: PropTypes.number,
     content: PropTypes.string,
     createdAt: PropTypes.object,
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
-  }),
+  }).isRequired,
 };
 
 export default PostCard;
