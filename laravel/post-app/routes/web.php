@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,17 +16,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/post', function(){
+    return view('posts.index');
+});
+Route::get('/post/form', function(){
+    return view('posts.postForm');
+});
 
-Route::get('/test', function(){
-    return 'Welcome !!!';
-});
-Route::get('/test2', function(){
-    return view('test.index');
-});
-Route::get('/test3', [TestController::class, 'index']);
-// Route::get('/test3', function(){
-//     $name = 'MJoon-Jung';
-//     $age = 25;
-//     // return view('test.show', ['name' => $name, 'age' => $age]);
-//     return view('test.show', compact('name', 'age'));
-// });
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
+
