@@ -3,17 +3,18 @@ import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
-import { loginRequestAction } from '../reducers/user';
+import { LOG_IN_REQUEST } from '../reducers/user';
 
 const LoginForm = () => {
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const dispatch = useDispatch(); 
-  const { logInLoading } = useSelector((state) => state.user)
+  const dispatch = useDispatch();
+  const { logInLoading } = useSelector((state) => state.user);
   const onSubmitForm = useCallback(() => {
-    dispatch(loginRequestAction({
-      email,password
-    }));
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: { email, password },
+    });
   }, [email, password]);
 
   return (

@@ -24,13 +24,15 @@ export const initialState = {
   me: null,
 };
 
-const dummyUser = {
-  id: 1,
+const dummyUser = (data) => ({
+  ...data,
   nickname: 'MJoonJung',
-  Posts: [],
-  Followings: [{ nickname: 'audwns' }, { nickname: 'dhdldhdl' }, { nickname: 'neue zeal' }],
-  Followers: [{ nickname: 'audwns' }, { nickname: 'dhdldhdl' }, { nickname: 'neue zeal' }],
-};
+  id: 1,
+  Posts: [{ id: 1 }],
+  Followings: [{ nickname: 'abc' }, { nickname: 'df Lee' }, { nickname: 'neue zeal' }],
+  Followers: [{ nickname: 'qwer' }, { nickname: 'zsdf Lee' }, { nickname: 'fas zeal' }],
+});
+
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
@@ -58,49 +60,12 @@ export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
-export const signUpSuccessAction = (data) => ({
-  type: SIGN_UP_SUCCESS,
-  data,
-});
-
-export const signUpFailureAction = (data) => ({
-  type: SIGN_UP_FAILURE,
-  data,
-});
-
 export const loginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
   data,
 });
-export const loginSuccessAction = (data) => ({
-  type: LOG_IN_SUCCESS,
-  data,
-});
-export const loginFailureAction = (data) => ({
-  type: LOG_IN_FAILURE,
-  data,
-});
-export const logoutRequestAction = (data) => ({
+export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
-  data,
-});
-export const logoutSuccessAction = () => ({
-  type: LOG_OUT_SUCCESS,
-});
-export const logoutFailureAction = () => ({
-  type: LOG_OUT_FAILURE,
-});
-export const changeNicknameRequestAction = (data) => ({
-  type: CHANGE_NICKNAME_REQUEST,
-  data,
-});
-export const changeNicknameSuccessAction = (data) => ({
-  type: CHANGE_NICKNAME_SUCCESS,
-  data,
-});
-export const changeNicknameFailureAction = (data) => ({
-  type: CHANGE_NICKNAME_FAILURE,
-  data,
 });
 
 export default (state = initialState, action) => produce(state, (draft) => {
@@ -140,13 +105,13 @@ export default (state = initialState, action) => produce(state, (draft) => {
     case LOG_IN_REQUEST: {
       draft.logInLoading = true;
       draft.logInError = null;
+      draft.logInDone = false;
       break;
     }
     case LOG_IN_SUCCESS: {
       draft.logInLoading = false;
       draft.logInDone = true;
-      draft.logOutDone = false;
-      draft.me = dummyUser;
+      draft.me = dummyUser(action.data);
       break;
     }
     case LOG_IN_FAILURE: {
@@ -163,7 +128,6 @@ export default (state = initialState, action) => produce(state, (draft) => {
     case LOG_OUT_SUCCESS: {
       draft.logOutLoading = false;
       draft.logOutDone = true;
-      draft.logInDone = false;
       draft.me = null;
       break;
     }
