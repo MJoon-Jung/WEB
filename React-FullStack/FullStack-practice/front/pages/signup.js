@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Form, Input, Checkbox, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
-import { Router } from 'react-router-dom';
-import { signUpSuccessAction } from '../reducers/user';
+import Router from 'next/router';
+import { SIGN_UP_REQUEST, REDIRECT_GO_HOME } from '../reducers/user';
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
 
@@ -17,13 +17,22 @@ const Signup = () => {
   const [nick, onChangeNick] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
-  const { me, signUpLoading } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (me) {
-      Router.push('/');
+    if (signUpDone) {
+      Router.replace('/');
+      dispatch({
+        type: REDIRECT_GO_HOME,
+      });
     }
-  }, [me && me.email]);
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
@@ -32,12 +41,15 @@ const Signup = () => {
     if (!term) {
       return setTermError(true);
     }
-    dispatch(signUpSuccessAction({
-      email,
-      password,
-      nick,
-    }));
-  }, [email, password, passwordCheck, term]);
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: {
+        email,
+        nick,
+        password,
+      },
+    });
+  }, [email, password, nick, passwordCheck, term]);
 
   const onChangePasswordCheck = useCallback((e) => {
     setPasswordError(e.target.value !== password);
@@ -52,7 +64,7 @@ const Signup = () => {
   return (
     <AppLayout>
       <Head>
-        <title>회원가입 | NodeBird</title>
+        <title>회원가입</title>
       </Head>
       <Form onFinish={onSubmit} style={{ padding: 10 }}>
         <div>

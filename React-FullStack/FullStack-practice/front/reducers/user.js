@@ -59,6 +59,7 @@ export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+export const REDIRECT_GO_HOME = 'REDIRECT_GO_HOME';
 
 export const loginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
@@ -111,7 +112,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
     case LOG_IN_SUCCESS: {
       draft.logInLoading = false;
       draft.logInDone = true;
-      draft.me = dummyUser(action.data);
+      draft.me = action.data;
       break;
     }
     case LOG_IN_FAILURE: {
@@ -143,12 +144,13 @@ export default (state = initialState, action) => produce(state, (draft) => {
       break;
     }
     case SIGN_UP_SUCCESS: {
-      draft.signUpLoading = false;
       draft.signUpDone = true;
+      draft.signUpLoading = false;
       break;
     }
     case SIGN_UP_FAILURE: {
       draft.signUpLoading = false;
+      draft.signUpError = true;
       draft.signUpError = action.error;
       break;
     }
@@ -174,6 +176,10 @@ export default (state = initialState, action) => produce(state, (draft) => {
     }
     case REMOVE_POST_OF_ME: {
       draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data);
+      break;
+    }
+    case REDIRECT_GO_HOME: {
+      draft.signUpDone = false;
       break;
     }
     default:

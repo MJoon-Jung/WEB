@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,16 +6,24 @@ import useInput from '../hooks/useInput';
 import { LOG_IN_REQUEST } from '../reducers/user';
 
 const LoginForm = () => {
-  const [email, onChangeEmail] = useInput('');
-  const [password, onChangePassword] = useInput('');
+  const [email, onChangeEmail, setEmail] = useInput('');
+  const [password, onChangePassword, setPassword] = useInput('');
   const dispatch = useDispatch();
-  const { logInLoading } = useSelector((state) => state.user);
+  const { logInLoading, logInError } = useSelector((state) => state.user);
   const onSubmitForm = useCallback(() => {
     dispatch({
       type: LOG_IN_REQUEST,
       data: { email, password },
     });
   }, [email, password]);
+
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+      setEmail('');
+      setPassword('');
+    }
+  }, [logInError]);
 
   return (
     <Form onFinish={onSubmitForm} style={{ padding: '10px' }}>
