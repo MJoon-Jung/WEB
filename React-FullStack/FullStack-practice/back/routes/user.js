@@ -3,8 +3,25 @@ const { User, Post } = require('../models');
 const bcrypt = require('bcrypt');
 const router = express();
 const passport = require('passport');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
-router.post('/login', (req,res,next) => {
+router.get('/', async (req, res, next) => {
+    try{
+        if(req.user) {
+            const user = await User.findOne({
+                where: { id: req.user.id }, 
+            });
+            res.status(200).json(user);
+        }else {
+            res.status(200).json(null);
+        }
+    }catch(err) {
+        console.log(err);
+        next(err);
+    }
+})
+
+router.post('/login', isNotLoggedIn, (req,res,next) => {
     passport.authenticate('local', (err, user, info) => {
         if(err){
             console.error(err);
@@ -40,7 +57,13 @@ router.post('/login', (req,res,next) => {
         })
     })(req,res,next);
 });
-router.post('/', async (req,res,next) => {
+
+router.post('/logout', isLoggedIn, (req,res,next) => {
+    req.logout();
+    req.session.destroy();
+    res.send('ok');
+});
+router.post('/', isNotLoggedIn, async (req,res,next) => {
     try{
         console.log(req.body);
         const exUser = await User.findOne({
