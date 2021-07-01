@@ -4,6 +4,7 @@ import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import AppLayout from '../components/AppLayout';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 const Home = () => {
   const { me } = useSelector((state) => state.user);
@@ -12,6 +13,9 @@ const Home = () => {
   useEffect(() => {
     dispatch({
       type: LOAD_POSTS_REQUEST,
+    });
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
     });
   }, []);
 
@@ -26,6 +30,7 @@ const Home = () => {
       }
     }
     window.addEventListener('scroll', onScroll);
+    console.log(mainPosts);
     return () => {
       window.removeEventListener('scroll', onScroll);
     };

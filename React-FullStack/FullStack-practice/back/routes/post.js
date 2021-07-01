@@ -12,14 +12,19 @@ router.post('/', isLoggedIn, async (req, res, next) => {
         const fullPost = await Post.findOne({
             where: { id: post.id },
             include: [{
+                model: User,
+                attributes: ['id', 'nickname'],
+            }, {
                 model: Image,
             }, {
                 model: Comment,
-            }, {
-                model: User,
-            }]
+                include: [{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                }]
+            }],
         })
-        res.status(201).json(post);
+        res.status(201).json(fullPost);
     }catch(err) {
         console.error(err);
         next(err);
@@ -29,7 +34,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
     try{ 
         const post = await Post.findOne({
-            where: { id: req.params.postId },
+            where: { id: parseInt(req.params.postId) },
         });
         if (!post) {
             return res.status(403).send('존재하지 않는 게시글입니다.');
@@ -37,10 +42,32 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
         const comment = await Comment.create({
             content: req.body.content,
             UserId: req.user.id,
-            PostId : req.params.postId,
+            PostId : parseInt(req.params.postId),
         });
-        res.status(201).json(post);
+        const fullComment = await Comment.findOne({
+            where: { id: comment.id },
+            include: [ {
+                model: User,
+                attributes: ['id', 'nickname'],
+            }],
+        })
+        res.status(201).json(fullComment);
     }catch(err) {
+        console.error(err);
+        next(err);
+    }
+});
+
+router.delete('/:postId', async (req, res, next) => {
+    try{
+        const postId = parseInt(req.params.postId);
+        const post = await Post.findByPk(postId);
+        if(!post){
+            return res.status(403).send('존재하지 않는 게시글입니다.');
+        }
+        await post.destroy();
+        res.status(200).send('게시글이 삭제되었습니다.');
+    } catch(err) {
         console.error(err);
         next(err);
     }

@@ -1,6 +1,4 @@
-import shortId from 'shortid';
 import produce from 'immer';
-import faker from 'faker';
 
 export const initialState = {
   mainPosts: [],
@@ -19,25 +17,6 @@ export const initialState = {
   removePostDone: false,
   removePostError: null,
 };
-
-export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-  id: shortId.generate(),
-  User: {
-    id: shortId.generate(),
-    nickname: faker.name.findName(),
-  },
-  content: faker.lorem.paragraph(),
-  Images: [{
-    src: faker.image.image(),
-  }],
-  Comments: [{
-    User: {
-      id: shortId.generate(),
-      nickname: faker.name.findName(),
-    },
-    content: faker.lorem.sentence(),
-  }],
-}));
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -77,7 +56,6 @@ export default (state = initialState, action) => produce(state, (draft) => {
       draft.mainPosts = action.data.concat(draft.mainPosts);
       draft.loadPostsLoading = false;
       draft.loadPostsDone = true;
-      draft.hasMorePosts = draft.mainPosts.length < 50;
       break;
     }
     case LOAD_POSTS_FAILURE: {
@@ -108,6 +86,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
       break;
     }
     case REMOVE_POST_SUCCESS: {
+      console.log(action.data);
       draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data);
       draft.removePostLoading = false;
       draft.removePostDone = true;
@@ -126,7 +105,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
     }
     case ADD_COMMENT_SUCCESS: {
       const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-      post.Comments.unshift(action.data.content);
+      post.Comments.unshift(action.data);
       draft.addCommentLoading = false;
       draft.addCommentDone = true;
       break;

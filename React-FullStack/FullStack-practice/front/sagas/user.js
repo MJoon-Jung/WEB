@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, call, put, delay } from '@redux-saga/core/effects';
+import { all, fork, takeLatest, call, put } from '@redux-saga/core/effects';
 import axios from 'axios';
 import {
   LOG_IN_FAILURE,
@@ -10,6 +10,9 @@ import {
   SIGN_UP_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
 } from '../reducers/user';
 
 function logInAPI(data) {
@@ -32,6 +35,9 @@ function* logIn(action) {
   }
 }
 
+function* watchLogIn() {
+  yield takeLatest(LOG_IN_REQUEST, logIn);
+}
 function logOutAPI() {
   return axios.post('/user/logout');
 }
@@ -49,11 +55,13 @@ function* logOut() {
     });
   }
 }
+function* watchLogOut() {
+  yield takeLatest(LOG_OUT_REQUEST, logOut);
+}
 
 function signUpAPI(data) {
   return axios.post('/user', data);
 }
-
 function* signUp(action) {
   try {
     const result = yield call(signUpAPI, action.data);
@@ -68,16 +76,28 @@ function* signUp(action) {
     });
   }
 }
-
-function* watchLogIn() {
-  yield takeLatest(LOG_IN_REQUEST, logIn);
-}
-
-function* watchLogOut() {
-  yield takeLatest(LOG_OUT_REQUEST, logOut);
-}
 function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
+}
+function loadMyInfoAPI() {
+  return axios.get('/user');
+}
+function* loadMyInfo(action) {
+  try {
+    const result = yield call(loadMyInfoAPI, action.data);
+    yield put({
+      type: LOAD_MY_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function* watchLoadMyInfo() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
 
 export default function* userSaga() {
@@ -85,5 +105,6 @@ export default function* userSaga() {
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
+    fork(watchLoadMyInfo),
   ]);
 }

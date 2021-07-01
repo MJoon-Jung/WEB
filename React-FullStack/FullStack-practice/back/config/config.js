@@ -9,7 +9,8 @@ module.exports = {
     "database": "react-nodebird",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
+    "operatorsAliases": false,
+    "timezone": "+09:00"
   },
   "test": {
     "username": "root",

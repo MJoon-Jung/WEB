@@ -6,25 +6,9 @@ import { ADD_POST_TO_ME, FOLLOW_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS, REMOVE_
 function addPostAPI(data) {
   return axios.post('/post', { content: data });
 }
-
-function addCommentAPI(data) {
-  return axios.post(`/post/${data.postId}/comment`, data);
-}
-
-function removePostAPI(data) {
-  return axios.delete('/api/post', data);
-}
-function followAPI(data) {
-  return axios.delete('/api/follow', data);
-}
-function unfollowAPI(data) {
-  return axios.post('/api/unfollow', data);
-}
-
 function* addPost(action) {
   try {
     const result = yield call(addPostAPI, action.data);
-    console.log(result);
     yield put({
       type: ADD_POST_SUCCESS,
       data: result.data,
@@ -34,20 +18,26 @@ function* addPost(action) {
       data: result.data.id,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: ADD_POST_FAILURE,
       error: err.response.data,
     });
   }
 }
+function* watchAddPost() {
+  yield takeLatest(ADD_POST_REQUEST, addPost);
+}
 
+function addCommentAPI(data) {
+  return axios.post(`/post/${data.postId}/comment`, data);
+}
 function* addComment(action) {
   try {
     const result = yield call(addCommentAPI, action.data);
-    console.log(result);
     yield put({
       type: ADD_COMMENT_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -56,40 +46,59 @@ function* addComment(action) {
     });
   }
 }
+function* watchAddComment() {
+  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
+}
 
+function removePostAPI(data) {
+  return axios.delete(`/post/${data}`);
+}
 function* removePost(action) {
   try {
-    console.log(1);
-    yield delay(1000);
+    const result = yield call(removePostAPI, action.data);
     yield put({
       type: REMOVE_POST_SUCCESS,
       data: action.data,
     });
-    console.log(2);
     yield put({
       type: REMOVE_POST_OF_ME,
       data: action.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: REMOVE_POST_FAILURE,
     });
   }
 }
+function* watchRemovePost() {
+  yield takeLatest(REMOVE_POST_REQUEST, removePost);
+}
 
+function loadPostsAPI(data) {
+  return axios.get('/posts', data);
+}
 function* loadPosts(action) {
   try {
-    yield delay(1000);
+    const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
-      data: generateDummyPost(10),
+      data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
       error: err.response.data,
     });
   }
+}
+function* watchLoadPosts() {
+  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
+}
+
+function followAPI(data) {
+  return axios.delete('/api/follow', data);
 }
 function* follow(action) {
   try {
@@ -105,6 +114,13 @@ function* follow(action) {
     });
   }
 }
+function* watchFollow() {
+  yield takeLatest(FOLLOW_REQUEST, follow);
+}
+
+function unfollowAPI(data) {
+  return axios.post('/api/unfollow', data);
+}
 function* unfollow(action) {
   try {
     yield delay(1000);
@@ -118,23 +134,6 @@ function* unfollow(action) {
       error: err.response.data,
     });
   }
-}
-
-function* watchAddPost() {
-  yield takeLatest(ADD_POST_REQUEST, addPost);
-}
-
-function* watchAddComment() {
-  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
-}
-function* watchRemovePost() {
-  yield takeLatest(REMOVE_POST_REQUEST, removePost);
-}
-function* watchLoadPosts() {
-  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
-}
-function* watchFollow() {
-  yield takeLatest(FOLLOW_REQUEST, follow);
 }
 function* watchUnfollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow);

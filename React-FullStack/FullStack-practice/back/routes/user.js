@@ -8,10 +8,25 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 router.get('/', async (req, res, next) => {
     try{
         if(req.user) {
-            const user = await User.findOne({
-                where: { id: req.user.id }, 
-            });
-            res.status(200).json(user);
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: req.user.id },
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [{
+                    model: Post,
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followings',
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followers',
+                    attributes: ['id'],
+                }]
+            })
+            res.status(200).json(fullUserWithoutPassword);
         }else {
             res.status(200).json(null);
         }
@@ -65,7 +80,6 @@ router.post('/logout', isLoggedIn, (req,res,next) => {
 });
 router.post('/', isNotLoggedIn, async (req,res,next) => {
     try{
-        console.log(req.body);
         const exUser = await User.findOne({
             where: {
                 email: req.body.email,

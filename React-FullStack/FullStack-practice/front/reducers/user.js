@@ -1,6 +1,9 @@
 import produce from 'immer';
 
 export const initialState = {
+  loadMyInfoLoading: false,
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   followLoading: false,
   followDone: false,
   followError: null,
@@ -32,6 +35,10 @@ const dummyUser = (data) => ({
   Followings: [{ nickname: 'abc' }, { nickname: 'df Lee' }, { nickname: 'neue zeal' }],
   Followers: [{ nickname: 'qwer' }, { nickname: 'zsdf Lee' }, { nickname: 'fas zeal' }],
 });
+
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
@@ -71,6 +78,23 @@ export const logoutRequestAction = () => ({
 
 export default (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+    case LOAD_MY_INFO_REQUEST: {
+      draft.loadMyInfoLoading = true;
+      draft.loadMyInfoDone = false;
+      draft.loadMyInfoError = null;
+      break;
+    }
+    case LOAD_MY_INFO_SUCCESS: {
+      draft.loadMyInfoLoading = false;
+      draft.loadMyInfoDone = true;
+      draft.me = action.data;
+      break;
+    }
+    case LOAD_MY_INFO_FAILURE: {
+      draft.loadMyInfoLoading = false;
+      draft.loadMyInfoError = action.error;
+      break;
+    }
     case FOLLOW_REQUEST: {
       draft.followLoading = true;
       draft.followError = null;
