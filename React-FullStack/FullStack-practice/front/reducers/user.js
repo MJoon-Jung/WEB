@@ -27,15 +27,6 @@ export const initialState = {
   me: null,
 };
 
-const dummyUser = (data) => ({
-  ...data,
-  nickname: 'MJoonJung',
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [{ nickname: 'abc' }, { nickname: 'df Lee' }, { nickname: 'neue zeal' }],
-  Followers: [{ nickname: 'qwer' }, { nickname: 'zsdf Lee' }, { nickname: 'fas zeal' }],
-});
-
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
@@ -185,6 +176,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
       break;
     }
     case CHANGE_NICKNAME_SUCCESS: {
+      draft.me.nickname = action.data;
       draft.changeNicknameDone = true;
       draft.changeNicknameLoading = false;
       break;
