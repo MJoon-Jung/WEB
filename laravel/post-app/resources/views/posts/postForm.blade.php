@@ -11,34 +11,35 @@
     <div class="container">
         <div class="header">
             <ul class="menu">
-                <div class="w-full md:w-auto md:flex-grow md:flex md:items-center">
-                    <a href="/post" rel="home">
-                        <svg class="w-10 h-10 text-purple-600" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
-                          <title>TailwindCSS</title>
-                          <path fill="currentColor" d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"></path>
-                        </svg>
-                      </a>
-                    <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0">
-                      <li>
-                        <a class="block px-4 py-1 md:p-2 lg:px-4" href="#" title="Link">Link</a>
-                      </li>
-                      <li>
-                        <a class="block px-4 py-1 md:p-2 lg:px-4 text-purple-600" href="#" title="Active Link">Active Link</a>
-                      </li>
-                      <li>
-                        <a class="block px-4 py-1 md:p-2 lg:px-4" href="/post/form" title="Link">Link</a>
-                      </li>
-                    </ul>
-                </div>
+              <div class="w-full md:w-auto md:flex-grow md:flex md:items-center">
+                <a href="/post" rel="home">
+                    <svg class="w-10 h-10 text-purple-600" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+                      <title>TailwindCSS</title>
+                      <path fill="currentColor" d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"></path>
+                    </svg>
+                  </a>
+                <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0">
+                  <li>
+                    <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
+                  </li>
+                </ul>
+              </div>
             </ul>
         </div>
         <div class="main">
-            <form action="/posts/store" method="POST" class="post-form">
-                @method('POST')
+            <form id="form" action="/post/store" method="POST">
                 @csrf
                 <div class="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
-                    <input class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text">
-                    <textarea class="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" spellcheck="false" placeholder="Describe everything about this post here"></textarea>
+                    <input name="title" class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text" required>
+                    @error('title')
+                      <div>{{ $message }}</div>
+                      <script>alert(`{{ $message }}`)</script>
+                    @enderror
+                    <textarea name="content" class="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" spellcheck="false" placeholder="Describe everything about this post here" required></textarea>
+                    @error('content')
+                      <div>{{ $message }}</div>
+                      <script>alert(`{{ $message }}`)</script>
+                    @enderror
                     <!-- icons -->
                     <div class="icons flex text-gray-500 m-2">
                       <svg class="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
@@ -49,7 +50,9 @@
                     <!-- buttons -->
                     <div class="buttons flex">
                       <div class="btn border border-gray-300 p-1 px-4 font-semibold cursor-pointer text-gray-500 ml-auto">Cancel</div>
-                      <div class="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">Post</div>
+
+                      <button id="submit_btn" type="submit" class="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">Post</button>
+                      {{-- <script>document.getElementById('form').addEventListener('submit', (event) => {event.preventDefault()})</script> --}}
                     </div>
                 </div>
             </form>

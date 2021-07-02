@@ -22,6 +22,8 @@ class CreatePostsTable extends Migration
                     ->constrained()
                     ->onDelete('cascade');
             $table->timestamps();
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
         });
     }
 

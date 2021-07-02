@@ -2,30 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
-    public function mainScreen(){
-        return view('posts.index');
+    public function post(){
+
+        // $posts = Post::orderBy('created_at', 'desc')->get();
+        // $posts = Post::latest()->paginate(5);
+        // $posts = DB::table('posts')->orderBy('created_at')->simplePaginate(5);
+        $posts = Post::orderBy('created_at','desc')->simplePaginate(5);
+
+        return view('posts.index', ['posts'=>$posts]);
     }
-    public function creat() {
-        // dd('OK');
+    public function creatForm() {
         return view('posts.postForm');
     }
-    public function showPost() {
-        $post = DB::connection('mypost')->table('posts')->get('select * from posts');
-        return view('posts.showPost', ['posts' => $post]);
-    }
+    // public function modifyForm() {
+    //     return view('posts.postForm', );
+    // }
     public function store(Request $request) {
         // $request->input['title'];
         // $request->input['content'];
-        $name = $request->name;
         $title = $request->title;
         $content = $request->content;
 
-        // DB::insert('insert into posts (title, content) values (?, ?, ?)', [$title, $content]);
+        $request->validate([
+            'title' => 'required|min:3',
+            'content' => 'required'
+        ]);
 
+        $post = new Post();
+        $post->title=$title;
+        $post->content=$content;
+        $post->user_id=Auth::user()->id;
+        $post->save();
+
+        return redirect('/post');
     }
 }
