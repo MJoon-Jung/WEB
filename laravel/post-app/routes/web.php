@@ -18,15 +18,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/post', [PostsController::class, 'post']);
-Route::get('/post/create', [PostsController::class, 'creatForm']);
-// Route::get('/post/modify', [PostsController::class, 'modifyForm']);
-Route::post('/post/store', [PostsController::class, 'store']);
-
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 
+Route::get('/post', [PostsController::class, 'post'])->name('posts.post');
+Route::get('/post/create', [PostsController::class, 'createForm'])->name('posts.createForm');
+Route::get('/post/{id}', [PostsController::class, 'showPost'])->name('posts.showPost');
+Route::delete('/post/{id}', [PostsController::class, 'destroy'])->name('posts.destroy');
+Route::get('/post/create/{id}', [PostsController::class, 'modifyForm'])->name('posts.modifyForm');
+Route::post('/post/store/{id}', [PostsController::class, 'patchStore'])->name('posts.patchStore');
+Route::post('/post/store', [PostsController::class, 'store'])->name('posts.store');

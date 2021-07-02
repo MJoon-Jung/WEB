@@ -17,8 +17,11 @@
         </a>
       <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0">
         <li>
-          <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
+          @if (Auth::user())
+            <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
+          @endif
         </li>
+        <a href="{{ url('/dashboard') }}" class="block px-4 py-1 md:p-2 lg:px-4">Dashboard</a>
       </ul>
     </div>
 
@@ -28,15 +31,18 @@
       @foreach ($posts as $key => $post)
         <div class="bg-white overflow-hidden hover:bg-green-100 border border-gray-200 p-3">
           <div class="m-2 text-justify text-sm">
-              <p class="text-right text-xs">{{ $post->created_at }}</p>
-              <h2 class="font-bold text-lg h-2 mb-8">{{ $post->title }}</h2>
+              <p class="text-right text-xs"></p>
+              <h2 class="font-bold text-lg h-2 mb-8">
+                <a href="{{ route('posts.showPost', ['id'=>$post->id, 'page'=>$posts->currentPage()]) }}" >{{ $post->title }}</a>
+              </h2>
               <p class="text-xs">
                 {{ $post->content }}
               </p>
           </div>
-          @if ($post->user_id === Auth::user()->id)
+          <p class="text-yellow-400 uppercase font-bold text-sm">{{ $post->created_at }}</p>
+          @if (Auth::user() && ($post->user_id === Auth::user()->id))
             <div class="w-full text-right mt-4">
-              <a href="/post/modify" class="text-green-400 uppercase font-bold text-sm">수정하기</a>
+              <a href="/post/create/{{ $post->id }}" class="text-green-400 uppercase font-bold text-sm">수정하기</a>
               {{-- <a href="{{route('profile', ['id' => 1])}}" class="text-green-400 uppercase font-bold text-sm">삭제하기</a> --}}
             </div>
           @endif
