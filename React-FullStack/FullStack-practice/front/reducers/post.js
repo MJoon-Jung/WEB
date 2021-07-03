@@ -155,9 +155,10 @@ export default (state = initialState, action) => produce(state, (draft) => {
       break;
     }
     case LOAD_POSTS_SUCCESS: {
-      draft.mainPosts = action.data.concat(draft.mainPosts);
+      draft.mainPosts = draft.mainPosts.concat(action.data);
       draft.loadPostsLoading = false;
       draft.loadPostsDone = true;
+      draft.hasMorePosts = action.data.length === 10;
       break;
     }
     case LOAD_POSTS_FAILURE: {
