@@ -6,7 +6,7 @@ import { ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE, ADD_COMMENT_REQUE
   LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE, LIKE_POST_REQUEST,
   LIKE_POST_SUCCESS, LIKE_POST_FAILURE, UNLIKE_POST_REQUEST,
   UNLIKE_POST_FAILURE, UNLIKE_POST_SUCCESS,
-  UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE } from '../reducers/post';
+  UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE, RETWEET_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 function unLikePostAPI(data) {
@@ -54,7 +54,7 @@ function* watchLikePost() {
 }
 
 function addPostAPI(data) {
-  return axios.post('/post', { content: data });
+  return axios.post('/post', data);
 }
 function* addPost(action) {
   try {
@@ -171,6 +171,28 @@ function* watchUploadImages() {
   yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
 }
 
+function retweetAPI(data) {
+  return axios.post(`/post/${data}/retweet`, data);
+}
+function* retweet(action) {
+  try {
+    const result = yield call(retweetAPI, action.data);
+    yield put({
+      type: RETWEET_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: RETWEET_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function* watchUpRetweet() {
+  yield takeLatest(RETWEET_REQUEST, retweet);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
@@ -180,5 +202,6 @@ export default function* postSaga() {
     fork(watchLikePost),
     fork(watchUnLikePost),
     fork(watchUploadImages),
+    fork(watchUpRetweet),
   ]);
 }
