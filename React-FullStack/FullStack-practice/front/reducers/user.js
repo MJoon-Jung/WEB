@@ -1,6 +1,9 @@
 import produce from 'immer';
 
 export const initialState = {
+  loadUserLoading: false,
+  loadUserDone: false,
+  loadUserError: null,
   removeFollowerLoading: false,
   removeFollowerDone: false,
   removeFollowerError: null,
@@ -31,10 +34,13 @@ export const initialState = {
   changeNicknameLoading: false,
   changeNicknameDone: false,
   changeNicknameError: null,
-  signUpData: {},
-  loginData: {},
   me: null,
+  userInfo: null,
 };
+
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
 export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
@@ -122,6 +128,23 @@ export default (state = initialState, action) => produce(state, (draft) => {
     case LOAD_FOLLOWERS_FAILURE: {
       draft.loadFollowersLoading = false;
       draft.loadFollowersError = action.error;
+      break;
+    }
+    case LOAD_USER_REQUEST: {
+      draft.loadUserLoading = true;
+      draft.loadUserDone = false;
+      draft.loadUserError = null;
+      break;
+    }
+    case LOAD_USER_SUCCESS: {
+      draft.loadUserLoading = false;
+      draft.loadUserDone = true;
+      draft.userInfo = action.data;
+      break;
+    }
+    case LOAD_USER_FAILURE: {
+      draft.loadUserLoading = false;
+      draft.loadUserError = action.error;
       break;
     }
     case LOAD_MY_INFO_REQUEST: {

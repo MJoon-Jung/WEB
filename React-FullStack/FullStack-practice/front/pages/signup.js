@@ -3,9 +3,13 @@ import { Form, Input, Checkbox, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
 import Router from 'next/router';
-import { SIGN_UP_REQUEST, REDIRECT_GO_HOME } from '../reducers/user';
+import axios from 'axios';
+import { END } from 'redux-saga';
+import { SIGN_UP_REQUEST, REDIRECT_GO_HOME, LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
+import wrapper from '../store/configureStore';
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
 
 const Signup = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -105,5 +109,21 @@ const Signup = () => {
     </AppLayout>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  context.store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  context.store.dispatch({
+    type: LOAD_POSTS_REQUEST,
+  });
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
+});
 
 export default Signup;

@@ -40,7 +40,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/followers', isLoggedIn, async (req, res, next) => {
     try{
-        const followers = await req.user.getFollowers({ limit: 3 });
+        const followers = await req.user.getFollowers({
+            limit: parseInt(req.query.limit, 10),
+        });
         res.status(200).json(followers);
     }catch(err) {
         console.error(err);
@@ -49,7 +51,9 @@ router.get('/followers', isLoggedIn, async (req, res, next) => {
 });
 router.get('/followings', isLoggedIn, async (req, res, next) => {
     try{
-        const followings = await req.user.getFollowings({ limit: 3 });
+        const followings = await req.user.getFollowings({
+            limit: parseInt(req.query.limit, 10),
+        });
         res.status(200).json(followings);
     }catch(err) {
         console.error(err);
