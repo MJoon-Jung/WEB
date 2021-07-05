@@ -10,6 +10,7 @@ const path = require('path');
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
+const hashtagRouter = require('./routes/hashtag');
 const passportConfig = require('./passport');
 const db = require('./models');
 const app = express();
@@ -43,6 +44,7 @@ app.use(passport.session());
 app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/posts', postsRouter);
+app.use('/hashtag', hashtagRouter);
 
 app.listen(3065, () => {
     console.log('server is running ')
