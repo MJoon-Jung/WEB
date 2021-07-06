@@ -9,5 +9,10 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $table = 'posts';
+    public function imagePath() {
+        // $path = '/storage/images/';
+        $path = env('IMAGE_PATH', '/storage/images/');
+        $imageFile = $this->image ?? 'noImage.png';
+        return $path.$imageFile;
+    }
 }

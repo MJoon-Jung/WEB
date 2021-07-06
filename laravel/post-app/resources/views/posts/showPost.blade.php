@@ -28,12 +28,15 @@
         <div class="w-96 m-auto ">
             <div class=" grid grid-cols-3 grid-rows-7 grid-flow-row overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
             <div class="col-span-3 row-span-4 p-1 m-1">
-            <a href="#">
-                <img
-                src="https://picsum.photos/640/400/?random"
-                alt="Placeholder"
-                class="rounded-t-xl object-cover h-48 w-full"/>
-            </a>
+            @isset($post->image)
+                <a href="#">
+                    <img
+                    src='http://localhost:8000/storage/images/{{ $post->image }}'
+                    alt="Placeholder"
+                    class="rounded-t-xl object-cover h-48 w-full"
+                    style="object-fit: cover; width: 100%;" />
+                </a>
+            @endisset
         </div>
         <div class="col-span-3 row-span-1">
             <div class="flex align-bottom flex-col leading-none p-2 md:p-4">
@@ -57,8 +60,7 @@
             </header>
         </div>      
     </div>
-    <p class="text-grey-darker text-sm">?min ago</p>
-        
+    <p class="text-purple-600">written on {{ $post->created_at->diffForHumans() }}</p>
     @if (Auth::user() && ($post->user_id === Auth::user()->id))
         <a href="/post/create/{{ $post->id }}" class="text-green-400 uppercase font-bold text-sm">수정하기</a>
         <form method="POST" action="/post/{{ $post->id }}">

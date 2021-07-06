@@ -28,7 +28,7 @@
         </div>
         <div class="main">
           @isset($post)
-            <form id="form" action="/post/store/{{ $post->id }}" method="POST">
+            <form id="form" action="/post/store/{{ $post->id }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
                 <input value="{{ $post->title }}" name="title" class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text" required>
@@ -41,6 +41,18 @@
                   <div>{{ $message }}</div>
                   <script>alert(`{{ $message }}`)</script>
                 @enderror
+                <div class="form-image">
+                  <img
+                    src={{ $post-> imagePath() }}
+                    alt="Placeholder"
+                    class="rounded-t-xl object-cover h-48 w-full"
+                    style="object-fit: cover; width: 100px; height:auto" />
+                  <label for="file">File</label>
+                  <input type="file" id="file" name="imgFile"/>
+                  @error('imgFile')
+                    <div>{{ $message }}</div>
+                  @enderror
+                </div>
                 <!-- icons -->
                 <div class="icons flex text-gray-500 m-2">
                   <svg class="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
@@ -59,7 +71,7 @@
             </form>
           @endisset
           @empty($post)
-            <form id="form" action="/post/store" method="POST">
+            <form id="form" action="/post/store" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
                   <input name="title" class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text" required>
@@ -72,6 +84,18 @@
                     <div>{{ $message }}</div>
                     <script>alert(`{{ $message }}`)</script>
                   @enderror
+                  <div class="form-image">
+                    <img
+                    src='http://localhost:8000/storage/images/default.png'
+                    alt="Placeholder"
+                    class="rounded-t-xl object-cover h-48 w-full"
+                    style="object-fit: cover; width: 100px; height:auto" />
+                    <label for="file">File</label>
+                    <input type="file" id="file" name="imgFile"/>
+                    @error('imgFile')
+                      <div>{{ $message }}</div>
+                    @enderror
+                  </div>
                   <!-- icons -->
                   <div class="icons flex text-gray-500 m-2">
                     <svg class="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
