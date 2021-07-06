@@ -16,8 +16,12 @@ const Profile = () => {
   const { me } = useSelector((state) => state.user);
   const fetcher = (url) => axios.get(url, { withCredentials: true }).then((result) => result.data);
 
+  // const [followersOffset, setFollowersOffset] = useState(0);
+  // const [followingsOffset, setFollowingsOffset] = useState(0);
   const [followersLimit, setFollowersLimit] = useState(3);
   const [followingsLimit, setFollowingsLimit] = useState(3);
+  // const [followersDatas, setFollowersDatas] = useState([]);
+  // const [followingsDatas, setFollowingsDatas] = useState([]);
 
   const { data: followersData, error: followerError } = useSWR(`http://localhost:3065/user/followers?limit=${followersLimit}`, fetcher);
   const { data: followingsData, error: followingError } = useSWR(`http://localhost:3065/user/followings?limit=${followingsLimit}`, fetcher);
@@ -26,6 +30,18 @@ const Profile = () => {
       Router.push('/');
     }
   }, [me && me.id]);
+
+  // useEffect(() => {
+  //   if (followersData) {
+  //     setFollowersDatas(followersData.concat(followersDatas));
+  //   }
+  // }, [followersData]);
+
+  // useEffect(() => {
+  //   if (followingsData) {
+  //     setFollowingsDatas(followingsData.concat(followingsDatas));
+  //   }
+  // }, [followingsData]);
 
   const loadingMoreFollowings = useCallback(() => {
     setFollowingsLimit((prev) => prev + 3);

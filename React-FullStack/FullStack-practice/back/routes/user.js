@@ -40,8 +40,20 @@ router.get('/', async (req, res, next) => {
 
 router.get('/followers', isLoggedIn, async (req, res, next) => {
     try{
+        // const followers = null;
+        // if(!req.query.offset){
+        //     followers = await req.user.getFollowers({
+        //         limit: 3,
+        //     });
+        // }else {
+        //     followers = await req.user.getFollowers({
+        //         limit: 3,
+        //         offset: parseInt(req.query.offset, 10),
+        //     });
+        // }
         const followers = await req.user.getFollowers({
             limit: parseInt(req.query.limit, 10),
+            // offset: parseInt(req.query.offset, 10),
         });
         res.status(200).json(followers);
     }catch(err) {
@@ -53,6 +65,7 @@ router.get('/followings', isLoggedIn, async (req, res, next) => {
     try{
         const followings = await req.user.getFollowings({
             limit: parseInt(req.query.limit, 10),
+            // offset: parseInt(req.query.offset, 10),
         });
         res.status(200).json(followings);
     }catch(err) {
