@@ -40,16 +40,18 @@
               </p>
           </div>
           <p class="text-purple-600">written on {{ $post->created_at->diffForHumans() }}</p>
-          @if (Auth::user() && ($post->user_id === Auth::user()->id))
-            <div class="w-full text-right mt-4">
-              <a href="/post/create/{{ $post->id }}" class="text-green-400 uppercase font-bold text-sm">수정하기</a>
-              <form method="POST" action="/post/{{ $post->id }}">
-                @method('DELETE')
-                @csrf
-                <button type="submit" class="text-green-400 uppercase font-bold text-sm" >삭제하기</button>
-            </form>
-            </div>
-          @endif
+          @auth
+            @can('update', $post)
+              <div class="w-full text-right mt-4">
+                <a href="/post/create/{{ $post->id }}" class="text-green-400 uppercase font-bold text-sm">수정하기</a>
+                <form method="POST" action="{{ route('posts.destroy', ['id'=>$post->id, 'page'=>$posts->currentPage()]) }}">
+                  @method('DELETE')
+                  @csrf
+                  <button type="submit" class="text-green-400 uppercase font-bold text-sm" >삭제하기</button>
+              </form>
+              </div>
+            @endcan
+          @endauth
         </div>
       @endforeach
     </div>

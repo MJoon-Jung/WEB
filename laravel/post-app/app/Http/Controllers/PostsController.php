@@ -59,6 +59,12 @@ class PostsController extends Controller
         // $request->input['title'];
         // $request->input['content'];
         $post = Post::findOrFail($id);
+        if($request->user()->cannot('update', $post)) {
+            return abort(403);
+        }
+        // if($post->user_id !== Auth::user()->id) {
+        //     return abort(403);
+        // }
         $title = $request->title;
         $content = $request->content;
         $request->validate([
@@ -98,12 +104,21 @@ class PostsController extends Controller
 
         return view('posts.showPost', compact('post', 'page'));
     }
-    public function destroy($id){
+    public function destroy(Request $request, $id){
+        $page = $request->page;
         $post = Post::find($id);
-        if($post->user_id === Auth::user()->id){
-            Post::destroy($id);
-            return redirect('/post');
+        
+        if($request->user()->cannot('delete', $post)) {
+            return abort(403);
         }
-        return;
+        // if($post->user_id !== Auth::user()->id){
+        //     return abort(403);
+        // }
+        if($post->image){
+            $imagePath = 'public/images/'.$post->image;
+            Storage::delete($imagePath);
+        }
+        Post::destroy($id);
+        return redirect()->route('posts.post', compact('page'));
     }
 }

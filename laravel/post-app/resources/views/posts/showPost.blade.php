@@ -61,14 +61,16 @@
         </div>      
     </div>
     <p class="text-purple-600">written on {{ $post->created_at->diffForHumans() }}</p>
-    @if (Auth::user() && ($post->user_id === Auth::user()->id))
-        <a href="/post/create/{{ $post->id }}" class="text-green-400 uppercase font-bold text-sm">수정하기</a>
-        <form method="POST" action="/post/{{ $post->id }}">
-            @method('DELETE')
-            @csrf
-            <button type="submit" class="bg-red-500 text-white px-6 py-2 rounded font-medium mx-3 hover:bg-red-600 transition duration-200 each-in-out" >삭제하기</button>
-        </form>
-    @endif
+    @auth
+        @can('update', $post)
+            <a href="/post/create/{{ $post->id }}" class="text-green-400 uppercase font-bold text-sm">수정하기</a>
+            <form method="POST" action="{{ route('posts.destroy', ['id'=>$post->id, 'page'=>$page]) }}">
+                @method('DELETE')
+                @csrf
+                <button type="submit" class="bg-red-500 text-white px-6 py-2 rounded font-medium mx-3 hover:bg-red-600 transition duration-200 each-in-out" >삭제하기</button>
+            </form>
+        @endcan
+    @endauth
     <a href="{{ route('posts.post', compact('page')) }}" class="text-blue-400 uppercase font-bold text-sm">목록으로 가기</a>
     <style>
         .hide-scroll-bar {

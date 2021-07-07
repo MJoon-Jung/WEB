@@ -29,5 +29,5 @@ Route::get('/post/create', [PostsController::class, 'createForm'])->name('posts.
 Route::get('/post/{id}', [PostsController::class, 'showPost'])->name('posts.showPost');
 Route::delete('/post/{id}', [PostsController::class, 'destroy'])->name('posts.destroy');
 Route::get('/post/create/{id}', [PostsController::class, 'modifyForm'])->name('posts.modifyForm');
-Route::post('/post/store/{id}', [PostsController::class, 'patchStore'])->name('posts.patchStore');
 Route::post('/post/store', [PostsController::class, 'store'])->name('posts.store');
+Route::post('/post/store/{id}', [PostsController::class, 'patchStore'])->name('posts.patchStore');
