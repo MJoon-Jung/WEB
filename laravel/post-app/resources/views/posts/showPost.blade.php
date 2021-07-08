@@ -7,21 +7,26 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="w-full md:w-auto md:flex-grow md:flex md:items-center">
-        <a href="/post" rel="home">
-        <svg class="w-10 h-10 text-purple-600" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+        <div class="w-full md:w-auto md:flex-grow md:flex md:items-center">
+      <a href="/post" rel="home">
+          <svg class="w-10 h-10 text-purple-600" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
             <title>TailwindCSS</title>
             <path fill="currentColor" d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"></path>
-        </svg>
+          </svg>
         </a>
-    <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0">
+      <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0">
+        @auth
+          <li>
+              <a href="/mypost" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">MyPosting</a>
+          </li>
+          <li>
+              <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
+          </li>
+        @endauth
         <li>
-        @if (Auth::user())
-            <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
-        @endif
+          <a href="{{ url('/dashboard') }}" class="block px-4 py-1 md:p-2 lg:px-4">Dashboard</a>
         </li>
-        <a href="{{ url('/dashboard') }}" class="block px-4 py-1 md:p-2 lg:px-4">Dashboard</a>
-    </ul>
+      </ul>
     </div>
 
     <div class="p-56">
@@ -55,12 +60,13 @@
         <div class="col-span-3 row-span-1">
             <header class="flex items-center justify-between leading-tight p-2 md:p-4">
                 <h1 class="text-lg">
-                    <a class="no-underline hover:underline text-black" href="#">{{ $post->content }}</a>
+                    <div class="no-underline hover:underline text-black">{!! $post->content !!}</div>
                 </h1>
             </header>
         </div>      
     </div>
     <p class="text-purple-600">written on {{ $post->created_at->diffForHumans() }}</p>
+    <p class="text-purple-600">{{ $post->user->name }}</p>
     @auth
         @can('update', $post)
             <a href="/post/create/{{ $post->id }}" class="text-green-400 uppercase font-bold text-sm">수정하기</a>

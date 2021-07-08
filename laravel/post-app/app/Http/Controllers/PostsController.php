@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostsController extends Controller
 {
@@ -22,6 +23,15 @@ class PostsController extends Controller
         // $posts = Post::orderBy('updated_at','desc')->simplePaginate(5);
 
         $posts = Post::latest()->paginate(6);
+        return view('posts.index', compact('posts'));
+    }
+    public function myPost(){
+        $posts = auth()->user()->posts()->latest()->paginate(6);
+        return view('posts.index', compact('posts'));
+    }
+    public function search(Request $request) {
+        $keyword = $request->keyword;
+        $posts = Post::where('title', 'like', '%' . $keyword . '%')->orWhere('content', 'like', '%' . $keyword . '%')->latest()->paginate(6);
         return view('posts.index', compact('posts'));
     }
     public function createForm() {
@@ -101,7 +111,6 @@ class PostsController extends Controller
     public function showPost(Request $request, $id){
         $page = $request->page;
         $post = Post::find($id);
-
         return view('posts.showPost', compact('post', 'page'));
     }
     public function destroy(Request $request, $id){

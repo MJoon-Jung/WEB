@@ -25,6 +25,8 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/post', [PostsController::class, 'post'])->name('posts.post');
+Route::get('/mypost', [PostsController::class, 'myPost'])->name('posts.myPost');
+Route::get('/posts/search', [PostsController::class, 'search'])->name('posts.search');
 Route::get('/post/create', [PostsController::class, 'createForm'])->name('posts.createForm');
 Route::get('/post/{id}', [PostsController::class, 'showPost'])->name('posts.showPost');
 Route::delete('/post/{id}', [PostsController::class, 'destroy'])->name('posts.destroy');

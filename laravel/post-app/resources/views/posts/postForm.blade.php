@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>Document</title>
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
 </head>
 <body>
     <div class="container">
@@ -19,8 +20,22 @@
                     </svg>
                   </a>
                 <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0">
+                  @auth
+                    <li>
+                      <a href="/mypost" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">MyPosting</a>
+                    </li>
+                    <li>
+                      <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
+                    </li>
+                  @endauth
                   <li>
-                    <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
+                    <a href="{{ url('/dashboard') }}" class="block px-4 py-1 md:p-2 lg:px-4">Dashboard</a>
+                  </li>
+                  <li>
+                    <form method="GET" action="{{ route('posts.search') }}">
+                      <input type="text" name="keyword" placeholder="입력해주세요"/>
+                      <button type="submit">검색</button>
+                    </form>
                   </li>
                 </ul>
               </div>
@@ -31,12 +46,12 @@
             <form id="form" action="/post/store/{{ $post->id }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
-                <input value="{{ $post->title }}" name="title" class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text" required>
+                <input value="{{ $post->title }}" name="title" class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text">
                 @error('title')
                   <div>{{ $message }}</div>
                   <script>alert(`{{ $message }}`)</script>
                 @enderror
-                <textarea name="content" class="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" spellcheck="false" placeholder="Describe everything about this post here" required>{{ $post->content }}</textarea>
+                <textarea id="content"name="content" class="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" spellcheck="false" placeholder="Describe everything about this post here">{{ $post->content }}</textarea>
                 @error('content')
                   <div>{{ $message }}</div>
                   <script>alert(`{{ $message }}`)</script>
@@ -74,12 +89,12 @@
             <form id="form" action="/post/store" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
-                  <input name="title" class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text" required>
+                  <input name="title" class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text">
                   @error('title')
                     <div>{{ $message }}</div>
                     <script>alert(`{{ $message }}`)</script>
                   @enderror
-                  <textarea name="content" class="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" spellcheck="false" placeholder="Describe everything about this post here" required></textarea>
+                  <textarea id="content" name="content" class="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" spellcheck="false" placeholder="Describe everything about this post here" ></textarea>
                   @error('content')
                     <div>{{ $message }}</div>
                     <script>alert(`{{ $message }}`)</script>
@@ -106,14 +121,23 @@
                   <!-- buttons -->
                   <div class="buttons flex">
                     <div class="btn border border-gray-300 p-1 px-4 font-semibold cursor-pointer text-gray-500 ml-auto">Cancel</div>
-
-                    <button id="submit_btn" type="submit" class="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">Post</button>
-                    {{-- <script>document.getElementById('form').addEventListener('submit', (event) => {event.preventDefault()})</script> --}}
+                    <button type="submit" style="z-index: 1" class="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">Post</button>
                     </div>
                 </div>
             </form>
           @endempty
         </div>
     </div>
+
+    <script>
+      ClassicEditor
+              .create( document.querySelector( '#content' ) )
+              .then( editor => {
+                      console.log( editor );
+              } )
+              .catch( error => {
+                      console.error( error );
+              } );
+    </script>
 </body>
 </html>

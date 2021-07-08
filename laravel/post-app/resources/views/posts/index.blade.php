@@ -16,12 +16,23 @@
           </svg>
         </a>
       <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0">
+        @auth
+          <li>
+              <a href="/mypost" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">MyPosting</a>
+          </li>
+          <li>
+              <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
+          </li>
+        @endauth
         <li>
-          @if (Auth::user())
-            <a href="/post/create" class="block px-4 py-1 md:p-2 lg:px-4" title="Link">posting</a>
-          @endif
+          <a href="{{ url('/dashboard') }}" class="block px-4 py-1 md:p-2 lg:px-4">Dashboard</a>
         </li>
-        <a href="{{ url('/dashboard') }}" class="block px-4 py-1 md:p-2 lg:px-4">Dashboard</a>
+        <li>
+          <form method="GET" action="{{ route('posts.search') }}">
+            <input type="text" name="keyword" placeholder="입력해주세요" required/>
+            <button type="submit">검색</button>
+          </form>
+        </li>
       </ul>
     </div>
 
