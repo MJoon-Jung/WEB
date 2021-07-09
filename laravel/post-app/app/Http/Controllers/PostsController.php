@@ -111,6 +111,8 @@ class PostsController extends Controller
     public function showPost(Request $request, $id){
         $page = $request->page;
         $post = Post::find($id);
+        $post->count++; //조회수
+        $post->save();
         return view('posts.showPost', compact('post', 'page'));
     }
     public function destroy(Request $request, $id){

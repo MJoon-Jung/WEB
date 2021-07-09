@@ -34,25 +34,17 @@
             <div class=" grid grid-cols-3 grid-rows-7 grid-flow-row overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
             <div class="col-span-3 row-span-4 p-1 m-1">
             @isset($post->image)
-                <a href="#">
-                    <img
-                    src='http://localhost:8000/storage/images/{{ $post->image }}'
-                    alt="Placeholder"
-                    class="rounded-t-xl object-cover h-48 w-full"
-                    style="object-fit: cover; width: 100%;" />
-                </a>
+                <img
+                src='http://localhost:8000/storage/images/{{ $post->image }}'
+                class="rounded-t-xl object-cover h-48 w-full"
+                style="object-fit: cover; width: 100%;" />
             @endisset
         </div>
         <div class="col-span-3 row-span-1">
             <div class="flex align-bottom flex-col leading-none p-2 md:p-4">
                 <div class="flex flex-row justify-between items-center">
                     <a class="flex items-center no-underline hover:underline text-black" href="#">
-                    <img
-                        alt="Placeholder"
-                        class="block rounded-full"
-                        src="https://picsum.photos/32/32/?random"
-                    />
-                    <span class="ml-2 text-sm">{{ $post->title }}</span>
+                    <span class="ml-2 text-sm">title: {{ $post->title }}</span>
                     </a>
                 </div>
             </div>
@@ -67,6 +59,7 @@
     </div>
     <p class="text-purple-600">written on {{ $post->created_at->diffForHumans() }}</p>
     <p class="text-purple-600">{{ $post->user->name }}</p>
+    <p class="text-purple-600">{{ $post->count }} {{ $post->count > 0 ? Str::plural('view', $post->count) : 'view' }} </p>
     @auth
         @can('update', $post)
             <a href="/post/create/{{ $post->id }}" class="text-green-400 uppercase font-bold text-sm">수정하기</a>

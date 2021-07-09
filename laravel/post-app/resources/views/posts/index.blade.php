@@ -46,11 +46,12 @@
               <h2 class="font-bold text-lg h-2 mb-8">
                 <a href="{{ route('posts.showPost', ['id'=>$post->id, 'page'=>$posts->currentPage()]) }}" >{{ $post->title }}</a>
               </h2>
-              <p class="text-xs">
-                {{ $post->content }}
-              </p>
+              <div class="text-xs">
+                {!!  $post->content !!}
+              </div>
           </div>
           <p class="text-purple-600">written on {{ $post->created_at->diffForHumans() }}</p>
+          <p class="text-purple-600">{{ $post->count }} {{ $post->count > 0 ? Str::plural('view', $post->count) : 'view' }} </p>
           @auth
             @can('update', $post)
               <div class="w-full text-right mt-4">
