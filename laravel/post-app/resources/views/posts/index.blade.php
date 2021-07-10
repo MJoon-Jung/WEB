@@ -67,7 +67,12 @@
         </div>
       @endforeach
     </div>
-    <div>{{ $posts -> links() }}</div>
+    @isset($keyword)
+      <div>{{ $posts->withQueryString() -> links() }}</div>
+    @endisset
+    @empty($keyword)
+      <div>{{ $posts-> links() }}</div>
+    @endempty
   </div>
 </body>
 </html>

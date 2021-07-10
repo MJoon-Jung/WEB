@@ -32,7 +32,7 @@ class PostsController extends Controller
     public function search(Request $request) {
         $keyword = $request->keyword;
         $posts = Post::where('title', 'like', '%' . $keyword . '%')->orWhere('content', 'like', '%' . $keyword . '%')->latest()->paginate(6);
-        return view('posts.index', compact('posts'));
+        return view('posts.index', compact('posts', 'keyword'));
     }
     public function createForm() {
         return view('posts.postForm');
