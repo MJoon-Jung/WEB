@@ -14,15 +14,24 @@ import { Users } from './users.entity';
 import { CreateUserDto } from 'src/dto/create-user.dto';
 import { LoginRequestDto } from 'src/dto/login.request.dto';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
+  ) {}
 
   @Get()
   async getAll(): Promise<Users[]> {
     return this.userService.getAll();
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  async getProfile(@Request() req) {
+    return req.user;
   }
   @Get('id')
   async getOneById(@Query('id') id: number): Promise<Users> {
@@ -36,7 +45,7 @@ export class UserController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    return req.user;
+    return this.authService.login(req.user);
   }
 
   @Post('register')
