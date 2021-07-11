@@ -5,5 +5,5 @@ export class CreateUserDto {
   readonly name: string;
 
   @IsInt()
-  readonly password: number;
+  readonly password: string;
 }
