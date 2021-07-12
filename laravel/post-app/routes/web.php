@@ -29,6 +29,7 @@ Route::get('/mypost', [PostsController::class, 'myPost'])->name('posts.myPost');
 Route::get('/posts/search', [PostsController::class, 'search'])->name('posts.search');
 Route::get('/post/create', [PostsController::class, 'createForm'])->name('posts.createForm');
 Route::get('/post/{id}', [PostsController::class, 'showPost'])->name('posts.showPost');
+Route::get('/post/user/{id}', [PostsController::class, 'userPosts'])->name('posts.userPosts');
 Route::delete('/post/{id}', [PostsController::class, 'destroy'])->name('posts.destroy');
 Route::get('/post/create/{id}', [PostsController::class, 'modifyForm'])->name('posts.modifyForm');
 Route::post('/post/store', [PostsController::class, 'store'])->name('posts.store');

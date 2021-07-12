@@ -17,7 +17,10 @@ class Post extends Model
     }
 
     public function user() {
-        // return $this->belongsTo('User::class');
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
+        // return $this->belongsTo('App\Models\User');
+    }
+    public function viewers() {
+        return $this->belongsToMany(User::class);
     }
 }

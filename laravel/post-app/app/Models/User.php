@@ -48,4 +48,7 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
         // return $this->hasMany('App\Models\Post');
     }
+    public function viewrs() {
+        return $this->belongsToMany(Post::class);
+    }
 }

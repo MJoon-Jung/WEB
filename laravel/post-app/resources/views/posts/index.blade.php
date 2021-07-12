@@ -51,7 +51,7 @@
               </div>
           </div>
           <p class="text-purple-600">written on {{ $post->created_at->diffForHumans() }}</p>
-          <p class="text-purple-600">{{ $post->count }} {{ $post->count > 0 ? Str::plural('view', $post->count) : 'view' }} </p>
+          <p class="text-purple-600">{{ $post->viewers->count() }} {{ $post->viewers->count() > 0 ? Str::plural('view', $post->viewers->count()) : 'view' }} </p>
           @auth
             @can('update', $post)
               <div class="w-full text-right mt-4">

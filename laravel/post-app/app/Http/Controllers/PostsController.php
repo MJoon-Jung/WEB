@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Builder;
 
 class PostsController extends Controller
 {
@@ -27,6 +25,11 @@ class PostsController extends Controller
     }
     public function myPost(){
         $posts = auth()->user()->posts()->latest()->paginate(6);
+        return view('posts.index', compact('posts'));
+    }
+    public function userPosts(Request $request){
+        $querys = $request->querys;
+        $page = $request->page;
         return view('posts.index', compact('posts'));
     }
     public function search(Request $request) {
@@ -109,10 +112,17 @@ class PostsController extends Controller
         return $fileName;
     }
     public function showPost(Request $request, $id){
+        // $post = Post::find($id);
+        // $post->count++; //조회;
+        // $post->save();
+
         $page = $request->page;
         $post = Post::find($id);
-        $post->count++; //조회수
-        $post->save();
+        $user = Auth::user();
+        if($user && !$post->viewers->contains($user)) {
+            $post->viewers()->attach($user->id);
+        }
+        $post = Post::find($id);
         return view('posts.showPost', compact('post', 'page'));
     }
     public function destroy(Request $request, $id){
