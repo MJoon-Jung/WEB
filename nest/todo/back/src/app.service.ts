@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { RegisterationData } from './dto/register.request.dto';
 
 @Injectable()
 export class AppService {
@@ -10,8 +10,8 @@ export class AppService {
   getOne(id: number): string {
     return `this action is ${id}`;
   }
-  setOne(createUserDto: CreateUserDto): CreateUserDto[] {
-    this.users.push(createUserDto);
+  setOne(registerationData: RegisterationData): RegisterationData[] {
+    this.users.push(registerationData);
     return this.users;
   }
 }

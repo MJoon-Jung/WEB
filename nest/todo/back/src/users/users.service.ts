@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Users } from './users.entity';
-import { CreateUserDto } from 'src/dto/create-user.dto';
+import { RegisterationData } from 'src/dto/register.request.dto';
 import { LoginRequestDto } from 'src/dto/login.request.dto';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -14,7 +14,7 @@ export class UsersService {
     @InjectRepository(Users) private usersRepository: Repository<Users>,
   ) {}
 
-  async createUser(user: LoginRequestDto): Promise<Users> {
+  async create(user: LoginRequestDto): Promise<Users> {
     const exUser = await this.usersRepository.findOne({
       name: user.name,
     });
@@ -28,7 +28,17 @@ export class UsersService {
     const newUser = await this.usersRepository.create(user);
     return await this.usersRepository.save(newUser);
   }
-  async findUser(name: string): Promise<Users> {
+
+  // async setCurrentRefreshToken(refreshToken: string, id: number) {
+  //   const currentHashedRefreshToken = await bcrypt.hash(
+  //     refreshToken,
+  //     process.env.SALTROUND,
+  //   );
+  //   await this.usersRepository.update(id, {
+  //     currentHashedRefreshToken,
+  //   });
+  // }
+  async findOne(name: string): Promise<Users> {
     try {
       console.log('findOne');
       const users = await this.usersRepository.findOne({ name: name });
@@ -53,8 +63,8 @@ export class UsersService {
       throw err;
     }
   }
-  async updatePassword(users: CreateUserDto): Promise<Users> {
-    const exUsers = await this.findUser(users.name);
+  async updatePassword(users: RegisterationData): Promise<Users> {
+    const exUsers = await this.findOne(users.name);
     exUsers.password = users.password;
     return this.usersRepository.save(exUsers);
   }

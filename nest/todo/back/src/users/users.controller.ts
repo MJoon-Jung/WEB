@@ -11,18 +11,13 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Users } from './users.entity';
-import { CreateUserDto } from 'src/dto/create-user.dto';
+import { RegisterationData } from 'src/dto/register.request.dto';
 import { LoginRequestDto } from 'src/dto/login.request.dto';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
-import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UsersService,
-  ) {}
+  constructor(private readonly userService: UsersService) {}
 
   @Get()
   async getAll(): Promise<Users[]> {
@@ -39,23 +34,19 @@ export class UserController {
   }
   @Get('name')
   async getOneByName(@Query('name') name: string): Promise<Users> {
-    return this.userService.findUser(name);
-  }
-
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+    return this.userService.findOne(name);
   }
 
   @Post('register')
   async createUser(@Body() loginRequestDto: LoginRequestDto): Promise<Users> {
-    return this.userService.createUser(loginRequestDto);
+    return this.userService.create(loginRequestDto);
   }
 
   @Patch('update')
-  async updatePassword(@Body() createUserDto: CreateUserDto): Promise<Users> {
-    return this.userService.updatePassword(createUserDto);
+  async updatePassword(
+    @Body() registerationData: RegisterationData,
+  ): Promise<Users> {
+    return this.userService.updatePassword(registerationData);
   }
   @Delete('delete')
   async deleteUser(@Body() id: number): Promise<Users> {
