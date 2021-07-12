@@ -1,4 +1,4 @@
-import { IsString, IsInt } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class RegisterationData {
   @IsString()
@@ -7,6 +7,6 @@ export class RegisterationData {
   @IsString()
   name: string;
 
-  @IsInt()
+  @IsString()
   password: string;
 }

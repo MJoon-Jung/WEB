@@ -30,7 +30,7 @@ export class UserController {
   }
   @Get('id')
   async getOneById(@Query('id') id: number): Promise<Users> {
-    return this.userService.getOneById(id);
+    return this.userService.getById(id);
   }
   @Get('name')
   async getOneByName(@Query('name') name: string): Promise<Users> {

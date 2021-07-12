@@ -18,7 +18,7 @@ dotenv.config();
     TypeOrmModule.forFeature([Users]),
     PassportModule,
     JwtModule.register({
-      secret: process.env.SECRET_KEY,
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
       signOptions: { expiresIn: '60s' },
     }),
   ],

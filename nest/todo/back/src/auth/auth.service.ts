@@ -5,18 +5,23 @@ import { Users } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterationData } from 'src/dto/register.request.dto';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     @InjectRepository(Users) private usersRepository: Repository<Users>,
   ) {}
-  async validateUser(email: string, password: string) {
+  async validateUser(email: string, pass: string) {
     try {
       const user = await this.usersRepository.findOne({ where: { email } });
       console.log('user info: ', email, user.password, user);
-      await this.verifyPassword(password, user.password);
-      return user;
+      await this.verifyPassword(pass, user.password);
+      const { password, ...withOutPassword } = user;
+      return withOutPassword;
     } catch (err) {
       throw new HttpException(
         'Wrong credentials provided',
@@ -25,10 +30,12 @@ export class AuthService {
     }
   }
 
-  async login(user: any) {
-    const payload = { sub: user.id, name: user.name };
+  async getCookieWithJwtToken(user: any) {
+    const payload = { userId: user.id, userName: user.name };
+    const token = this.jwtService.sign(payload);
     return {
-      access_token: this.jwtService.sign(payload),
+      cookie: `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME}`,
+      access_token: token,
     };
   }
 

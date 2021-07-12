@@ -55,13 +55,15 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async getOneById(id: number): Promise<Users> {
-    try {
-      const users = await this.usersRepository.findOneOrFail(id);
-      return users;
-    } catch (err) {
-      throw err;
+  async getById(id: number): Promise<Users> {
+    const user = await this.usersRepository.findOneOrFail(id);
+    if (!user) {
+      throw new HttpException(
+        'User with this id does not exist',
+        HttpStatus.NOT_FOUND,
+      );
     }
+    return user;
   }
   async updatePassword(users: RegisterationData): Promise<Users> {
     const exUsers = await this.findOne(users.name);
@@ -70,7 +72,7 @@ export class UsersService {
   }
 
   async deleteUser(id: number): Promise<Users> {
-    const exUsers = await this.getOneById(id);
+    const exUsers = await this.getById(id);
     return await this.usersRepository.remove(exUsers);
   }
 }
