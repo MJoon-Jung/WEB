@@ -52,5 +52,8 @@
                 </x-button>
             </div>
         </form>
+        <div>
+            <a href="{{ route('github.login') }}">Github Login</a>
+        </div>
     </x-auth-card>
 </x-guest-layout>
