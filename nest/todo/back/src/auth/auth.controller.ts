@@ -3,14 +3,16 @@ import {
   Post,
   Get,
   UseGuards,
-  Request,
   Body,
   HttpCode,
   Res,
+  Req,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { RegisterationData } from 'src/dto/register.request.dto';
+import RequestWithUser from 'src/users/requestWithUser.interface';
 import { AuthService } from './auth.service';
+import { JwtRefreshGuard } from './jwt-auth-refresh.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';
 
@@ -20,18 +22,43 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  hi() {
-    return 'hi';
+  authenticat(@Req() req) {
+    return req.user;
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Get('refresh')
+  refresh(@Req() req: RequestWithUser) {
+    const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(
+      req.user.id,
+      req.user.name,
+    );
+    req.res.setHeader('Set-Cookie', accessTokenCookie);
+    return req.user;
   }
 
   @HttpCode(200)
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req: any, @Res() res: Response) {
-    const { cookie, access_token } =
-      await this.authService.getCookieWithJwtToken(req.user);
-    res.setHeader('Set-Cookie', cookie);
-    return res.json({ access_token: access_token });
+  async login(@Req() req: RequestWithUser, @Res() res: Response) {
+    const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(
+      req.user.id,
+      req.user.name,
+    );
+    const refreshTokenCookie = this.authService.getCookieWithJwtRefreshToken(
+      req.user.id,
+      req.user.name,
+    );
+    res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
+    return res.json({ accessTokenCookie, refreshTokenCookie });
+  }
+
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logOut(@Req() req: RequestWithUser, @Res() res: Response) {
+    res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
+    return res.json({ userid: req.user.id, logout: true });
   }
 
   @Post('register')

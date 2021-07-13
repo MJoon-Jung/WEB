@@ -18,11 +18,12 @@ export class AuthService {
   async validateUser(email: string, pass: string) {
     try {
       const user = await this.usersRepository.findOne({ where: { email } });
-      console.log('user info: ', email, user.password, user);
       await this.verifyPassword(pass, user.password);
       const { password, ...withOutPassword } = user;
+      console.log(withOutPassword);
       return withOutPassword;
     } catch (err) {
+      console.log(err);
       throw new HttpException(
         'Wrong credentials provided',
         HttpStatus.BAD_REQUEST,
@@ -30,13 +31,27 @@ export class AuthService {
     }
   }
 
-  async getCookieWithJwtToken(user: any) {
-    const payload = { userId: user.id, userName: user.name };
+  getCookieWithJwtAccessToken(id: number, name: string) {
+    const payload: TokenPayload = { userId: id, userName: name };
     const token = this.jwtService.sign(payload);
-    return {
-      cookie: `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME}`,
-      access_token: token,
-    };
+    const cookie = `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME}`;
+    return cookie;
+  }
+  getCookieWithJwtRefreshToken(id: number, name: string) {
+    const payload: TokenPayload = { userId: id, userName: name };
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_REFRESH_TOKEN_SECRET,
+      expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME,
+    });
+    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME}`;
+    return cookie;
+  }
+
+  getCookieForLogOut() {
+    return [
+      'Authentication=; HttpOnly; Path=/; Max-Age=0',
+      'Refresh=; HttpOnly; Path=/; Max-Age=0',
+    ];
   }
 
   async verifyPassword(plainTextPassword: string, hashedPassword: string) {

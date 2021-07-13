@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
+import { JwtRefreshTokenStrategy } from './jwt.refresh.strategy';
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ dotenv.config();
       signOptions: { expiresIn: '60s' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshTokenStrategy],
   exports: [AuthService, JwtModule],
   controllers: [AuthController],
 })
