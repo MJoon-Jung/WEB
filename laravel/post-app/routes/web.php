@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
@@ -18,8 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/login/github', [LoginController::class, 'redirectToProvider'])->name('github.login');
-Route::get('/login/github/callback', [LoginController::class, 'handleProviderCallback'])->name('github.callback');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -37,3 +36,8 @@ Route::delete('/post/{id}', [PostsController::class, 'destroy'])->name('posts.de
 Route::get('/post/create/{id}', [PostsController::class, 'modifyForm'])->name('posts.modifyForm');
 Route::post('/post/store', [PostsController::class, 'store'])->name('posts.store');
 Route::post('/post/store/{id}', [PostsController::class, 'patchStore'])->name('posts.patchStore');
+
+Route::get('/chart/index', [PostsController::class, 'post']);
+
+Route::get('/auth/login/github', [LoginController::class, 'redirectToProvider'])->name('github.login');
+Route::get('/auth/login/github/callback', [LoginController::class, 'handleProviderCallback'])->name('github.callback');
