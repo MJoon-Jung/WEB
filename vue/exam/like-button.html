@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구구단</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <p>{{ random }} 곱하기 {{ random2 }} 는 ?</p>
+        <input v-model.number="answer" ref="ans" type="number">
+        <button @click="onClick">입력!</button>
+        <p>{{ result }}</p>
+    </div>
+</body>
+<script>
+    const app = new Vue({
+        el: '#root',
+        data: {
+            random: parseInt(Math.random() * 9) + 1,
+            random2: parseInt(Math.random() * 9) + 1,
+            answer: null,
+            result: '',
+        },
+        methods: {
+            onClick() {
+                const correctAnswer = this.random * this.random2;
+                if(this.answer === correctAnswer) {
+                    this.result = '정답!';
+                    this.random = this.shuffle();
+                    this.random2 = this.shuffle();
+                }else{
+                    this.result = '땡!';
+                }
+                this.$refs.ans.focus();
+                this.answer = null;
+            },
+            shuffle() {
+                return parseInt(Math.random() * 9) + 1;
+            }
+        }
+    })
+</script>
+</html>

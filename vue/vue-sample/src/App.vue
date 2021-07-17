@@ -1,19 +1,17 @@
 <template>
-  <div>
     <Menubar/>
     <div>
-        <input type="text" v-model="writer" placeholder="writer">
-        <textarea v-model="content" placeholder="content"></textarea>
-        <button @click="save">등록</button>
+      <input type="text" v-model="writer" placeholder="writer">
+      <textarea v-model="content" placeholder="content"></textarea>
+      <button @click="save">등록</button>
 
-        <ul>
-          <li v-for='comment in comments' v-bind:key="comment.id">
-            <p>{{ comment.content }}</p>
-            <p>By{{ comment.writer }}</p>
-          </li>
-        </ul>
-      </div>
-  </div>
+      <ul>
+        <li v-for='comment in comments' v-bind:key="comment.id">
+          <p>{{ comment.content }}</p>
+          <p>By{{ comment.writer }}</p>
+        </li>
+      </ul>
+    </div>
 </template>
 
 <script lang="ts">
