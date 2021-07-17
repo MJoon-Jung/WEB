@@ -4,6 +4,7 @@ interface Job {
     salary: number,
     id: string,
     description: string,
+    image?: string,
 }
 
 export default Job;
