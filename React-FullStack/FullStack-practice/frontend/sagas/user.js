@@ -111,6 +111,8 @@ function* loadMyInfo(action) {
       data: result.data,
     });
   } catch (err) {
+    console.log('users loadmyInfo error입니다@@@@@@@@@@@@@@@@@@@@@@@@@');
+    console.error(err);
     yield put({
       type: LOAD_MY_INFO_FAILURE,
       error: err.response.data,

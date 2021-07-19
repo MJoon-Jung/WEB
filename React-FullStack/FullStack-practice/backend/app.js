@@ -24,10 +24,7 @@ db.sequelize.sync({ force: false })
     .catch((err) => console.error(err));
 passportConfig();
 app.use(morgan('dev'));
-app.use(cors({
-    origin: 'http://localhost:3060',
-    credentials: true,
-}));
+app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
