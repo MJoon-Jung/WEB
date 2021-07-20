@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,6 +10,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
 import { JwtRefreshTokenStrategy } from './jwt.refresh.strategy';
+import { GithubService } from './github.service';
+import { LocalService } from './local.service';
 
 dotenv.config();
 
@@ -23,7 +25,14 @@ dotenv.config();
       signOptions: { expiresIn: '60s' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshTokenStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    JwtRefreshTokenStrategy,
+    LocalService,
+    GithubService,
+  ],
   exports: [AuthService, JwtModule],
   controllers: [AuthController],
 })

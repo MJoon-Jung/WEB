@@ -1,3 +1,4 @@
+import { IsEmail } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -5,6 +6,7 @@ export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @IsEmail()
   @Column({ unique: true })
   email: string;
 
@@ -12,9 +14,12 @@ export class Users {
   name: string;
 
   @Column()
-  password: string;
+  password?: string;
 
-  // @Column({ nullable: true })
-  // @Exclude()
-  // currentHashedRefreshToken?: string;
+  @Column({
+    type: 'enum',
+    name: 'provider',
+    enum: ['github', 'local'],
+  })
+  provider!: 'github' | 'local';
 }

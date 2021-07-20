@@ -1,12 +1,18 @@
-import { IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 
 export class RegisterationData {
   @IsString()
   email: string;
 
   @IsString()
-  name: string;
+  name?: string;
 
   @IsString()
-  password: string;
+  password?: string;
+
+  @IsEnum({
+    name: 'provider',
+    enum: ['github', 'local'],
+  })
+  provider!: 'github' | 'local';
 }
