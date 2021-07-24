@@ -6,9 +6,10 @@ import { googleGuard } from './google.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Post()
+  login() {}
+
   @UseGuards(googleGuard)
   @Get('login/google/callback')
-  login() {
-    return 'success';
-  }
+  googleCallBack() {}
 }
