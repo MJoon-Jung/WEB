@@ -10,7 +10,4 @@ export class Users {
 
   @Column('varchar', { name: 'nickname', nullable: true, length: 20 })
   nickname: string | null;
-
-  @Column('varchar', { name: 'password', length: 20 })
-  password: string;
 }
