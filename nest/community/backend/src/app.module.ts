@@ -6,8 +6,6 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GoogleOauthModule } from './google-oauth/google-oauth.module';
-import { JwtModule } from './jwt/jwt.module';
 import * as ormconfig from '../ormconfig';
 
 @Module({
@@ -18,8 +16,6 @@ import * as ormconfig from '../ormconfig';
     UsersModule,
     AuthModule,
     TypeOrmModule.forRoot(ormconfig),
-    GoogleOauthModule,
-    JwtModule,
   ],
   controllers: [AppController],
   providers: [AppService],

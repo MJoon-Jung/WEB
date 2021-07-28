@@ -1,6 +1,6 @@
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JoinRequestDto } from 'src/users/dto/join.request.dto';
 
@@ -19,24 +19,20 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
     _accessToken: string,
     _refreshToken: string,
     profile: Profile,
+    done: VerifyCallback,
   ) {
-    const { id, name, emails } = profile;
+    const { id, emails, _json } = profile;
 
-    // Here a custom User object is returned. In the the repo I'm using a UsersService with repository pattern, learn more here: https://docs.nestjs.com/techniques/database
-    return {
-      provider: 'google',
-      providerId: id,
-      name: name.givenName,
-      username: emails[0].value,
-    };
+    //hd는 @뒤에 구분자 gsuit 계정
+    const yju_hd = 'g.yju.ac.kr';
+    if (_json.hd !== yju_hd) {
+      throw new BadRequestException();
+    }
+    const email = emails[0].value;
+    const joingRequestUser: JoinRequestDto = { userId: id, userEmail: email };
+    const user = await this.usersService.findOrCreate(joingRequestUser);
+    if (user) {
+      done(null, user);
+    }
   }
-  // async validate(profile: any, done: VerifyCallback): Promise<void> {
-  //   const { emails } = profile;
-  //   const joinRequestDto: JoinRequestDto = {
-  //     email: emails?.[0].value ?? null,
-  //   };
-  //   const user = await this.usersService.findOrCreate(joinRequestDto.email);
-
-  //   done(null, user);
-  // }
 }
