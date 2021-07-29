@@ -1,33 +1,34 @@
-// import { ExtractJwt, Strategy } from 'passport-jwt';
-// import { PassportStrategy } from '@nestjs/passport';
-// import { Injectable } from '@nestjs/common';
-// import { Request } from 'express';
-// import * as dotenv from 'dotenv';
-// import { UsersService } from 'src/users/users.service';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { PassportStrategy } from '@nestjs/passport';
+import { Injectable } from '@nestjs/common';
+import { Request } from 'express';
+import { Users } from 'src/entities/Users';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { VerifyCallback } from 'passport-google-oauth20';
 
-// dotenv.config();
+@Injectable()
+export class JwtRefreshTokenStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh-token',
+) {
+  constructor(
+    @InjectRepository(Users) private usersRepository: Repository<Users>,
+  ) {
+    super({
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request: Request) => {
+          return request?.cookies?.Refresh;
+        },
+      ]),
+      secretOrKey: process.env.JWT_REFRESH_TOKEN_SECRET,
+    });
+  }
 
-// @Injectable()
-// export class JwtRefreshTokenStrategy extends PassportStrategy(
-//   Strategy,
-//   'jwt-refresh-token',
-// ) {
-//   constructor(private readonly userService: UsersService) {
-//     super({
-//       jwtFromRequest: ExtractJwt.fromExtractors([
-//         (request: Request) => {
-//           return request?.cookies?.Refresh;
-//         },
-//       ]),
-//       secretOrKey: process.env.JWT_REFRESH_TOKEN_SECRET,
-//       passReqToCallback: true,
-//     });
-//   }
-
-//   async validate(req: Request, payload: TokenPayload): Promise<any> {
-//     const user = await this.userService.getById(payload.userId);
-//     const { password, ...withOutPassword } = user;
-//     console.log(withOutPassword);
-//     return withOutPassword;
-//   }
-// }
+  async validate(payload: TokenPayload, done: VerifyCallback): Promise<any> {
+    const user = await this.usersRepository.findOne({
+      where: { userId: payload.userId },
+    });
+    done(null, user);
+  }
+}

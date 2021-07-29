@@ -1,7 +1,10 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { User } from 'src/common/decorators/user.decorator';
 import { GoogleOauthGuard } from './google-oauth.guard';
 
-@Controller('auth/google')
+@ApiTags('google')
+@Controller('api/auth/google')
 export class GoogleOauthController {
   constructor() {}
 
@@ -11,7 +14,7 @@ export class GoogleOauthController {
 
   @Get('redirect')
   @UseGuards(GoogleOauthGuard)
-  async googleAuthRedirect(@Req() req) {
-    return req.user;
+  async googleAuthRedirect(@User() user) {
+    return user;
   }
 }

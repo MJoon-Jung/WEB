@@ -24,8 +24,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
     const { id, emails, _json } = profile;
 
     //hd는 @뒤에 구분자 gsuit 계정
-    const yju_hd = 'g.yju.ac.kr';
-    if (_json.hd !== yju_hd) {
+    if (_json.hd !== process.env.YJU_HD) {
       throw new BadRequestException();
     }
     const email = emails[0].value;

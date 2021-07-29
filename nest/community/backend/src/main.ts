@@ -10,6 +10,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
+
   const config = new DocumentBuilder()
     .setTitle('YJP community API')
     .setDescription('YJP community 개발을 위한 API 문서입니다')
