@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: *
+      MYSQL_DATABASE: *
+    ports: 
+      - 3306:3306
+    networks:
+      - shared-network
+    volumes:
+      - ./mysql-volume:/var/lib/mysql
+  backend:
+    container_name: app_backend
+    build: 
+      dockerfile: Dockerfile
+      context: ./backend
+    volumes:
+      - /app/node_modules
+      - ./backend:/app
+    ports:
+      - 3065:3065
+    depends_on:
+      - mysql
+    networks:
+      - shared-network
+    restart: always
+  frontend:
+    container_name: app_frontend
+    build: 
+      dockerfile: Dockerfile
+      context: ./frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 3060:3060
+    depends_on:
+      - backend
+    networks:
+      - shared-network
+    restart: always
+networks:
+  shared-network:
