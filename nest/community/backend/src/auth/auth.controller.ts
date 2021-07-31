@@ -25,6 +25,5 @@ export class AuthController {
       req.user.userId,
     );
     req.res.setHeader('Set-Cookie', accessTokenCookie);
-    return { success: true, message: 'logout successed' };
   }
 }
