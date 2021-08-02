@@ -5,6 +5,9 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 import RequestWithUser from 'src/users/dto/requestWithUser.interface';
 import { JwtRefreshGuard } from './jwt/jwt-auth.refresh.guard';
+import { User } from 'src/common/decorators/user.decorator';
+import { isNotLoggedInGuard } from './not-logged-in.guard';
+import { isLoggedInGuard } from './logged-in-guard';
 
 @Controller('api/auth')
 export class AuthController {
@@ -25,5 +28,12 @@ export class AuthController {
       req.user.userId,
     );
     req.res.setHeader('Set-Cookie', accessTokenCookie);
+    return { success: true };
+  }
+
+  @UseGuards(isLoggedInGuard, JwtAuthGuard)
+  @Get()
+  Authenticate(@User() user) {
+    return user;
   }
 }

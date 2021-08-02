@@ -11,7 +11,7 @@ import { VerifyCallback } from 'passport-google-oauth20';
 dotenv.config();
 
 @Injectable()
-export class JwtAuthStrategy extends PassportStrategy(Strategy) {
+export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     @InjectRepository(Users) private usersRepository: Repository<Users>,
   ) {

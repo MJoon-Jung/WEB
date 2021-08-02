@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JoinRequestDto } from 'src/users/dto/join.request.dto';
+import passport from 'passport';
 
 @Injectable()
 export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
@@ -14,11 +15,10 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
       scope: ['email', 'profile'],
     });
   }
-
   async validate(
     _accessToken: string,
     _refreshToken: string,
-    profile: Profile,
+    profile: GoogleProfile,
     done: VerifyCallback,
   ) {
     const { id, emails, _json } = profile;
@@ -34,4 +34,9 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
       done(null, user);
     }
   }
+}
+export interface GoogleProfile extends passport.Profile {
+  _json: {
+    hd: string;
+  };
 }
