@@ -1,6 +1,6 @@
 import { Module } from "vuex";
 import { RootState } from "..";
-import axios from "axios";
+import client from "@/api/client";
 
 export interface Memo {
   title: string;
@@ -23,7 +23,7 @@ export const Memos: Module<MemoState, RootState> = {
   mutations: {},
   actions: {
     getMemos({ commit }) {
-      axios
+      client
         .get("/memos")
         .then((res) => {
           commit("updateMemos", res.data);
@@ -31,7 +31,7 @@ export const Memos: Module<MemoState, RootState> = {
         .catch((err) => console.error(err));
     },
     getMemo({ commit }, memoid) {
-      axios
+      client
         .get(`/memos/${memoid}`)
         .then((res) => {
           commit("updateMemo", res.data);
@@ -39,19 +39,19 @@ export const Memos: Module<MemoState, RootState> = {
         .catch((err) => console.error(err));
     },
     addMemo(formData) {
-      axios
+      client
         .post("/memos", formData)
         .then(() => console.log("addMemo success"))
         .catch((err) => console.error(err));
     },
     updateMemo(memoid) {
-      axios
+      client
         .put(`/momos/${memoid}`)
         .then(() => console.log("updateMemo success"))
         .catch((err) => console.error(err));
     },
     deleteMemo(memoid) {
-      axios
+      client
         .delete(`/memos/${memoid}`)
         .then(() => console.log("deleteMemo success"))
         .catch((err) => console.error(err));

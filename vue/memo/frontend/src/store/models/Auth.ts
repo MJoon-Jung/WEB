@@ -1,12 +1,17 @@
 import { Module } from "vuex";
 import { RootState } from "..";
-import axios from "axios";
+import client from "@/api/client";
+import router from "@/router";
 
-export interface AuthState {}
+export interface AuthState {
+  isUserLoggedIn: boolean;
+}
 
 export const Auth: Module<AuthState, RootState> = {
   namespaced: true,
-  state: {},
+  state: {
+    isUserLoggedIn: false,
+  },
   mutations: {},
   actions: {},
   getters: {},

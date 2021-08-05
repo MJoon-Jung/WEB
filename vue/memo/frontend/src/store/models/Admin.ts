@@ -1,6 +1,6 @@
 import { Module } from "vuex";
 import { RootState } from "..";
-import axios from "axios";
+import client from "@/api/client";
 import { User } from "./Users";
 import { Memo } from "./Memos";
 
@@ -30,7 +30,7 @@ export const Admin: Module<AdminState, RootState> = {
   },
   actions: {
     getUsers({ commit }) {
-      axios
+      client
         .get("/admin/users")
         .then((res) => {
           commit("updateUsers", res.data);
@@ -38,7 +38,7 @@ export const Admin: Module<AdminState, RootState> = {
         .catch((err) => console.error(err));
     },
     getUser({ commit }, userid) {
-      axios
+      client
         .get(`/admin/users/${userid}`)
         .then((res) => {
           commit("updateUser", res.data);
@@ -46,7 +46,7 @@ export const Admin: Module<AdminState, RootState> = {
         .catch((err) => console.error(err));
     },
     deleteUser(userid) {
-      axios
+      client
         .delete(`/admin/users/${userid}`)
         .then(() => {
           console.log(`${userid} is deleted`);
@@ -54,7 +54,7 @@ export const Admin: Module<AdminState, RootState> = {
         .catch((err) => console.error(err));
     },
     getMemos({ commit }) {
-      axios
+      client
         .get("/admin/memos")
         .then((res) => {
           commit("updateMemos", res.data);

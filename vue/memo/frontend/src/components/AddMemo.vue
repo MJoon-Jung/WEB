@@ -1,12 +1,8 @@
 <template>
-  <div>
-    Home 화면 입니다
-  </div>
+  <div>Hi</div>
 </template>
 <script>
 import { defineComponent } from "vue";
 export default defineComponent({
 });
 </script>
-
-

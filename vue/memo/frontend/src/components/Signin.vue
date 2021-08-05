@@ -6,11 +6,11 @@
             <form class="p-14 bg-white max-w-sm mx-auto rounded-xl shadow-xl overflow-hidden p-6 space-y-10">
                 <h2 class="text-4xl font-bold text-center text-indigo-600">Login</h2>
                 <div class="f-outline px-2 relative border rounded-lg focus-within:border-indigo-500">
-                    <input v-model="email" type="email" name="email" placeholder="email"
+                    <input v-model="user.userid" type="text" name="userid" placeholder="ID"
                         class="block p-2 w-full text-lg appearance-none focus:outline-none bg-transparent" />
                 </div>
                 <div class="f-outline px-2 relative border rounded-lg focus-within:border-indigo-500">
-                    <input v-model="password" type="password" name="password" placeholder="password"
+                    <input v-model="user.password" type="password" name="password" placeholder="Password"
                         class="block p-2 w-full text-lg appearance-none focus:outline-none bg-transparent" />
                 </div>
                 <div class="block mt-2">
@@ -24,7 +24,7 @@
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="#">
                         Forgot Password?
                     </a>
-                    <button
+                    <button @click.prevent="loginListener"
                         class="px-6 py-2 ml-4 font-semibold cursor-pointer text-center focus:outline-none transition hover:shadow-lg shadow hover:bg-indigo-700 rounded-full text-white bg-indigo-600 ">
             Log in
         </button>
@@ -36,10 +36,27 @@
 
 <script>
 import { defineComponent } from "vue";
-
+import { useStore } from 'vuex';
 export default defineComponent({
-    data: {
+    setup() {
+        const store = useStore();
         
-    }
+        const login = (userInfo) => store.dispatch("Users/login", userInfo);
+        return { login }
+    },
+    data() {
+        return {
+            user: {
+                userid: '',
+                password: '',
+            },
+        }
+    },
+    methods: {
+        loginListener() {
+            this.login(this.user);
+        },
+    },
 })
 </script>
+
