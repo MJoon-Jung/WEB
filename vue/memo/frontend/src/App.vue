@@ -15,8 +15,14 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const isUserLoggin = () => store.dispatch("Users/isCurrenUserState");
-    isUserLoggin();
+    const currentUserLoggedin = () => store.dispatch("Users/isCurrenUserState");
+    const isUserLoggedIn = computed(() => store.state.Users.isUserLoggedIn);
+    console.log('hello', isUserLoggedIn);
+    currentUserLoggedin();
+    return { currentUserLoggedin }
+  },
+  updated(){
+    this.currentUserLoggedin();
   }
 });
 </script>

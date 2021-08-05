@@ -1,8 +1,12 @@
 import { Module } from "vuex";
 import { RootState } from "..";
 import client from "@/api/client";
+import sendMultipartRequest from "@/api/sendMultipartRequest";
+import router from "@/router";
+import axios from "axios";
 
 export interface Memo {
+  memoid: number;
   title: string;
   content: string;
   file: File;
@@ -20,11 +24,26 @@ export const Memos: Module<MemoState, RootState> = {
     memos: [],
     memo: {} as Memo,
   },
-  mutations: {},
+  mutations: {
+    updateMemos(state, memos) {
+      state.memos = memos;
+    },
+    updateMemo(state, memo) {
+      state.memo = memo;
+    },
+    deleteMemo(state, memoid) {
+      console.log("memoid: ", memoid);
+      state.memos = [...state.memos].filter((memo) => {
+        console.log("memo: ", memo);
+        memo.memoid !== memoid;
+      });
+      console.log("memos:", state.memos);
+    },
+  },
   actions: {
     getMemos({ commit }) {
       client
-        .get("/memos")
+        .get("/api/memos")
         .then((res) => {
           commit("updateMemos", res.data);
         })
@@ -32,28 +51,36 @@ export const Memos: Module<MemoState, RootState> = {
     },
     getMemo({ commit }, memoid) {
       client
-        .get(`/memos/${memoid}`)
+        .get(`/api/memos/${memoid}`)
         .then((res) => {
           commit("updateMemo", res.data);
         })
         .catch((err) => console.error(err));
     },
-    addMemo(formData) {
-      client
-        .post("/memos", formData)
-        .then(() => console.log("addMemo success"))
-        .catch((err) => console.error(err));
+    addMemo(context, formData) {
+      sendMultipartRequest
+        .post("/api/memos", formData)
+        .then(() => {
+          console.log("addMemo success");
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => router.push("/"));
     },
     updateMemo(memoid) {
       client
-        .put(`/momos/${memoid}`)
+        .put(`/api/momos/${memoid}`)
         .then(() => console.log("updateMemo success"))
         .catch((err) => console.error(err));
     },
-    deleteMemo(memoid) {
+    deleteMemo(context, memoid) {
       client
-        .delete(`/memos/${memoid}`)
-        .then(() => console.log("deleteMemo success"))
+        .delete(`/api/memos/${memoid}`)
+        .then(() => {
+          console.log("deleteMemo success");
+          context.commit("deleteMemo", memoid);
+        })
         .catch((err) => console.error(err));
     },
   },

@@ -13,13 +13,24 @@ const routes: Array<RouteRecordRaw> = [
   },
   { path: "/add", name: "Add", component: AddMemo, meta: { isAuth: true } },
   {
-    path: "/memos/:memoId",
+    path: "/memos/:memoid",
     name: "Read",
     component: ReadMemo,
-    meta: { isAuth: true },
+    props: true,
+    meta: { isLoggedIn: true },
   },
-  { path: "/signin", name: "Signin", component: Signin },
-  { path: "/signup", name: "Signup", component: Signup },
+  {
+    path: "/signin",
+    name: "Signin",
+    component: Signin,
+    meta: { isNotLoggedIn: true },
+  },
+  {
+    path: "/signup",
+    name: "Signup",
+    component: Signup,
+    meta: { isNotLoggedIn: true },
+  },
 ];
 
 const router = createRouter({
@@ -28,8 +39,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.isAuth)) {
+  if (to.matched.some((record) => record.meta.isLoggedIn)) {
     localStorage.getItem("accessToken") ? next() : next("/signin");
+  } else if (to.matched.some((record) => record.meta.isNotLoggedIn)) {
+    localStorage.getItem("accessToken") ? next("/") : next();
   } else {
     next();
   }

@@ -68,6 +68,7 @@ export const Users: Module<UserState, RootState> = {
       });
     },
     isCurrenUserState({ state, commit }) {
+      console.log("실행됬어용");
       if (localStorage.getItem("accessToken")) {
         const token = localStorage.getItem("accessToken");
         const { sub } = JwtDecode<JwtPayLoad>(token as string);
