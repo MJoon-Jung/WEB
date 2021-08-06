@@ -3,14 +3,13 @@ import { RootState } from "..";
 import client from "@/api/client";
 import sendMultipartRequest from "@/api/sendMultipartRequest";
 import router from "@/router";
-import axios from "axios";
 
 export interface Memo {
-  memoid: number;
-  title: string;
-  content: string;
-  file: File;
-  originalFileName: string;
+  memoid: number | null;
+  title: string | null;
+  content: string | null;
+  file: File | null;
+  originalFileName: string | null;
 }
 
 export interface MemoState {
@@ -33,11 +32,17 @@ export const Memos: Module<MemoState, RootState> = {
     },
     deleteMemo(state, memoid) {
       console.log("memoid: ", memoid);
-      state.memos = [...state.memos].filter((memo) => {
-        console.log("memo: ", memo);
-        memo.memoid !== memoid;
+      state.memos = state.memos.filter((memo) => {
+        return memo.memoid !== memoid;
       });
       console.log("memos:", state.memos);
+    },
+    resetMemo(state) {
+      state.memo.memoid = null;
+      state.memo.title = "";
+      state.memo.content = "";
+      state.memo.file = null;
+      state.memo.originalFileName = null;
     },
   },
   actions: {
@@ -68,11 +73,12 @@ export const Memos: Module<MemoState, RootState> = {
         })
         .finally(() => router.push("/"));
     },
-    updateMemo(memoid) {
-      client
-        .put(`/api/momos/${memoid}`)
+    updateMemo(context, formData) {
+      sendMultipartRequest
+        .put(`/api/momos/${context.state.memo.memoid}`, formData)
         .then(() => console.log("updateMemo success"))
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
+        .finally(() => router.push("/"));
     },
     deleteMemo(context, memoid) {
       client
@@ -84,5 +90,12 @@ export const Memos: Module<MemoState, RootState> = {
         .catch((err) => console.error(err));
     },
   },
-  getters: {},
+  getters: {
+    getCurrentMemo(state) {
+      return state.memo;
+    },
+    getCurrentMemos(state) {
+      return state.memos;
+    },
+  },
 };

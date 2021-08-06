@@ -4,6 +4,11 @@ import AddMemo from "@/components/AddMemo.vue";
 import Signin from "@/components/Signin.vue";
 import Signup from "@/components/Signup.vue";
 import ReadMemo from "@/components/ReadMemo.vue";
+import EditMemo from "@/components/EditMemo.vue";
+import client from "@/api/client";
+import JwtDecode, { JwtPayload } from "jwt-decode";
+import store from "../store";
+import { computed } from "vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -11,7 +16,19 @@ const routes: Array<RouteRecordRaw> = [
     name: "Home",
     component: Home,
   },
-  { path: "/add", name: "Add", component: AddMemo, meta: { isAuth: true } },
+  {
+    path: "/add",
+    name: "Add",
+    component: AddMemo,
+    meta: { isLoggedIn: true },
+  },
+  {
+    path: "/edit/:memoid",
+    name: "Edit",
+    component: EditMemo,
+    props: true,
+    meta: { isLoggedIn: true },
+  },
   {
     path: "/memos/:memoid",
     name: "Read",
@@ -38,11 +55,29 @@ const router = createRouter({
   routes,
 });
 
+interface JwtPayLoad extends JwtPayload {
+  sub: string;
+}
+const isUserLoggedIn = computed(() => store.getters["Users/getIsUserLoggedIn"]);
 router.beforeEach((to, from, next) => {
+  if (localStorage.getItem("accessToken")) {
+    const token = localStorage.getItem("accessToken");
+    const { sub } = JwtDecode<JwtPayLoad>(token as string);
+    client
+      .get(`/api/users/${sub}`)
+      .then(() => {
+        store.commit("Users/updateCurrentLoggedIn", true);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  } else {
+    store.commit("Users/updateCurrentLoggedIn", false);
+  }
   if (to.matched.some((record) => record.meta.isLoggedIn)) {
-    localStorage.getItem("accessToken") ? next() : next("/signin");
+    isUserLoggedIn.value ? next() : next("/signin");
   } else if (to.matched.some((record) => record.meta.isNotLoggedIn)) {
-    localStorage.getItem("accessToken") ? next("/") : next();
+    isUserLoggedIn.value ? next("/") : next();
   } else {
     next();
   }

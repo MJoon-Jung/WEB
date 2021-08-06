@@ -6,23 +6,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { useStore } from "vuex";
+import { defineComponent } from "vue";
 import Menubar from './components/Menubar.vue';
 export default defineComponent({
   components: {
     Menubar,
   },
-  setup() {
-    const store = useStore();
-    const currentUserLoggedin = () => store.dispatch("Users/isCurrenUserState");
-    const isUserLoggedIn = computed(() => store.state.Users.isUserLoggedIn);
-    console.log('hello', isUserLoggedIn);
-    currentUserLoggedin();
-    return { currentUserLoggedin }
-  },
-  updated(){
-    this.currentUserLoggedin();
-  }
 });
 </script>

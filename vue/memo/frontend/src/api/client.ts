@@ -16,7 +16,11 @@ client.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async (error) => {
+    const { response } = error;
+    if (response.status === 403) {
+      localStorage.removeItem("accessToken");
+    }
     return Promise.reject(error);
   }
 );

@@ -59,11 +59,9 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const getMemo = (memoid) => store.dispatch('Memos/getMemo', memoid);
+    store.dispatch('Memos/getMemo', props.memoid);
     const memo = computed(() => store.state.Memos.memo);
-
-    getMemo(props.memoid);
-
+    
     return { memo };
   }
 });

@@ -39,43 +39,23 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { computed, defineComponent, onUnmounted } from "vue";
 import { useStore } from 'vuex';
 export default defineComponent({
     setup() {
         const store = useStore();
         const register = (userInfo) => store.dispatch("Users/register", userInfo);
-        return { register }
-    },
-    data() {
-        return {
-            user: {
-                userid: '',
-                name: '',
-                password: '',
-            },
+        const user = computed(() => store.getters['Users/getUser']);
+
+        const registerListener = () => {
+            return register(user.value);
         }
-    },
-    methods: {
-        registerListener() {
-            this.register(this.user)
-        },
+        onUnmounted(() => {
+            user.value.userid = '';
+            user.value.name = '';
+            user.value.password = '';
+        })
+        return { register, user, registerListener };
     },
 })
 </script>
-
-// const store = useStore();
-// const userId = computed(() => store.state.user.userId);
-// const reviews = computed(() => store.state.reviews.reviews);
-// const reviewsCount = computed(() => store.getters["reviews/reviewCount"]);
-// const saveUserId = (newId: string) =>
-// store.commit("user/updateUserId", newId);
-// const updateReviews = () => store.dispatch("reviews/getReviews");
-// return { userId, reviewsCount, reviews, updateReviews, saveUserId };
-
-        // loginListener() {
-        //     axios
-        //         .post("/api/users", this.user)
-        //         .then(() => console.log("register: ", this.user))
-        //         .catch((err) => console.error(err));
-        // },

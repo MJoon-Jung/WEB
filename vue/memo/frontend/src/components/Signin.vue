@@ -35,27 +35,18 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import { useStore } from 'vuex';
 export default defineComponent({
     setup() {
-        const store = useStore();
-        
+        const store = useStore(); 
         const login = (userInfo) => store.dispatch("Users/login", userInfo);
-        return { login }
-    },
-    data() {
-        return {
-            user: {
-                userid: '',
-                password: '',
-            },
+        const user = computed(() => store.getters['Users/getUser']);
+
+        const loginListener = () => {
+            return login(user.value);
         }
-    },
-    methods: {
-        loginListener() {
-            this.login(this.user);
-        },
+        return { login, user, loginListener }
     },
 })
 </script>

@@ -31,11 +31,10 @@ export const Users: Module<UserState, RootState> = {
     isUserLoggedIn: false,
   },
   mutations: {
-    updateMyInfo(state, user) {
+    updateMyInfo(state, user: User) {
       state.user = user;
-      state.isUserLoggedIn = true;
     },
-    checkCurrentLoggedIn(state, currentState) {
+    updateCurrentLoggedIn(state, currentState) {
       state.isUserLoggedIn = currentState;
     },
   },
@@ -57,43 +56,29 @@ export const Users: Module<UserState, RootState> = {
       console.log("register", userInfo);
       axios
         .post("/api/users", userInfo)
-        .then(() => console.log("register: ", userInfo))
+        .then(() => router.push("/"))
         .catch((err) => console.error(err));
     },
     login(context, user) {
       axios.post("/api/auth/login", user).then((res) => {
         localStorage.setItem("accessToken", res.data.token);
         context.commit("updateMyInfo", user);
+        context.commit("updateCurrentLoggedIn", true);
         router.push("/");
       });
     },
-    isCurrenUserState({ state, commit }) {
-      console.log("실행됬어용");
-      if (localStorage.getItem("accessToken")) {
-        const token = localStorage.getItem("accessToken");
-        const { sub } = JwtDecode<JwtPayLoad>(token as string);
-        client
-          .get(`/api/users/${sub}`)
-          .then(() => {
-            console.log("LoggedIn");
-            commit("checkCurrentLoggedIn", true);
-          })
-          .catch((err) => {
-            console.error(err);
-            router.push("/");
-          });
-      } else {
-        commit("checkCurrentLoggedIn", false);
-      }
-    },
-    autoLogin() {
-      if (localStorage.getItem("accessToken")) {
-        return true;
-      }
-    },
-    logout() {
+    logout({ commit }) {
       localStorage.removeItem("accessToken");
+      commit("updateMyInfo", { userid: "", name: "", password: "" });
+      commit("updateCurrentLoggedIn", false);
     },
   },
-  getters: {},
+  getters: {
+    getIsUserLoggedIn(state, getters, rootState) {
+      return state.isUserLoggedIn;
+    },
+    getUser(state, getters, rootState) {
+      return state.user;
+    },
+  },
 };

@@ -17,6 +17,7 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
+    "vue3-simple-file-input": "^1.0.3",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

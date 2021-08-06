@@ -8,6 +8,7 @@
             </div>
             <div v-else>
                 <router-link to="/add">add memo</router-link>
+                <button @click="clickLogoutListener" class="ml-10">logout</button>
             </div>
         </div>
     </nav>
@@ -20,9 +21,15 @@ import { useStore } from "vuex";
 export default defineComponent({
     setup() {
         const store = useStore();
-        const isUserLoggedIn = computed(() => store.state.Users.isUserLoggedIn);
+        const user = computed(() => store.state.Users.user);
+        const logout = () => store.dispatch('Users/logout');
+        const isUserLoggedIn = computed(() => store.getters["Users/getIsUserLoggedIn"]);
+        const clickLogoutListener = () => {
+            logout();
+        }
+        console.log(user);
 
-        return { isUserLoggedIn };
+        return { user, clickLogoutListener, isUserLoggedIn };
     },
 })
 </script>
