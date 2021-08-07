@@ -27,7 +27,6 @@ export default defineComponent({
         const clickLogoutListener = () => {
             logout();
         }
-        console.log(user);
 
         return { user, clickLogoutListener, isUserLoggedIn };
     },

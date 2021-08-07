@@ -65,18 +65,14 @@ export const Memos: Module<MemoState, RootState> = {
     addMemo(context, formData) {
       sendMultipartRequest
         .post("/api/memos", formData)
-        .then(() => {
-          console.log("addMemo success");
-        })
-        .catch((err) => {
-          console.error(err);
-        })
+        .then(() => console.log("addMemo success"))
+        .catch((err) => console.error(err))
         .finally(() => router.push("/"));
     },
-    updateMemo(context, formData) {
+    updateMemo(context, updateInfo) {
       sendMultipartRequest
-        .put(`/api/momos/${context.state.memo.memoid}`, formData)
-        .then(() => console.log("updateMemo success"))
+        .put(`/api/memos/${updateInfo.memoid}`, updateInfo.formData)
+        .then(() => console.log("addMemo success"))
         .catch((err) => console.error(err))
         .finally(() => router.push("/"));
     },
