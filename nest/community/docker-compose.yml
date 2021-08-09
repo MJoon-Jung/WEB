@@ -4,8 +4,8 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: *
-      MYSQL_DATABASE: *
+      MYSQL_ROOT_PASSWORD: rhksflwk
+      MYSQL_DATABASE: yju
     ports: 
       - 3306:3306
     networks:

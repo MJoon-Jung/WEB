@@ -16,16 +16,13 @@ export class GoogleOauthController {
   async googleAuth(@Req() req) {}
 
   @UseGuards(isNotLoggedInGuard, GoogleOauthGuard)
-  @Redirect('http://localhost:3060')
+  @Redirect('http://localhost:3060/login/refresh')
   @Get('redirect')
   async googleAuthRedirect(@Req() req: RequestWithUser) {
-    const accessTokenCookie = this.jwtAuthService.getCookieWithJwtAccessToken(
-      req.user.userId,
-    );
     const refreshTokenCookie = this.jwtAuthService.getCookieWithJwtRefreshToken(
       req.user.userId,
     );
-    req.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
+    req.res.setHeader('Set-Cookie', refreshTokenCookie);
     return req.user;
   }
 }

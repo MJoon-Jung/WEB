@@ -1,6 +1,6 @@
-import { client } from './client';
+import { client } from "./defaultClient";
 
-const fetcher = (url: string) => client(url).then((res) => res.headers.authorization);
+const fetcher = (url: string) =>
+	client(url).then((res) => res.headers.authorization);
 
 export default fetcher;
-

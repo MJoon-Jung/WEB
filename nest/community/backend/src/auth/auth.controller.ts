@@ -1,4 +1,12 @@
-import { Controller, Get, HttpCode, Post, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Req,
+  Res,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { UseGuards } from '@nestjs/common';
@@ -6,8 +14,6 @@ import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 import RequestWithUser from 'src/users/dto/requestWithUser.interface';
 import { JwtRefreshGuard } from './jwt/jwt-auth.refresh.guard';
 import { User } from 'src/common/decorators/user.decorator';
-import { isNotLoggedInGuard } from './not-logged-in.guard';
-import { isLoggedInGuard } from './logged-in-guard';
 
 @Controller('api/auth')
 export class AuthController {
@@ -24,14 +30,15 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @Get('refresh')
   refresh(@Req() req: RequestWithUser) {
-    const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(
+    const accessToken = this.authService.getCookieWithJwtAccessToken(
       req.user.userId,
     );
-    req.res.setHeader('Set-Cookie', accessTokenCookie);
-    return { success: true };
+    req.res.setHeader('Authorization', `Bearer ${accessToken}`);
+
+    return req.user;
   }
 
-  @UseGuards(isLoggedInGuard, JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   Authenticate(@User() user) {
     return user;

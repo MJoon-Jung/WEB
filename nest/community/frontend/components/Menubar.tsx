@@ -1,18 +1,17 @@
-import React, { useCallback, useState } from 'react';
-import { client } from '../api/client';
-import User from '../types/User';
+import React, { useCallback } from 'react';
+import { client } from '../api/defaultClient';
 
-const Menubar = () => {
+const Menubar = () => { 
     const loginClickListener = useCallback(() => {
         window.location.href = 'http://localhost:3065/api/auth/google';
     }, [])
 
     const isExtendedLogin = useCallback(() => {
-        client.get('/api/auth/refresh');
+        client.get('/auth/refresh');
     }, [])
 
     const clickAccessListener = useCallback(() => {
-        client.get('/api/auth')
+        client.get('/auth')
             .then((res) => console.log(res.data))
             .catch((err) => console.error(err));
     }, [])
